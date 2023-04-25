@@ -28,7 +28,7 @@ export const coffees : Product[] = [
         description : "Un café affirmé, avec une fine acidité. Notes de céréales.",
         price : 0.43,
         pricePerTen : 4.3,
-        picture : "Capriccio",
+        picture : "https://www.nespresso.com/ecom/medias/sys_master/public/15900731801630/Capriccio-OL.png?impolicy=product&imwidth=90",
         link : "https://www.nespresso.com/fr/fr/order/capsules/original/capriccio-capsule-cafe"
     },{
         name : "Napoli",

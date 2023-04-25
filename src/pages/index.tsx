@@ -19,6 +19,12 @@ type Card = {
   }
 };
 
+type Carousel = {
+  title?:string;
+  cards: Card[]
+}
+
+
 export default function Home() {
 
   useEffect(()=>{
@@ -54,6 +60,36 @@ export default function Home() {
     })
   }
 
+  function insertBundle(){
+    const carousel : Carousel = {
+      title: "Coffee",
+      cards : []
+    }
+
+    coffees.forEach((coffee)=>{
+      let card : Card = {
+        title : coffee.name,
+        text : coffee.description,
+        
+        actions : [
+          {
+            type : "LINK",
+            title : coffee.name,
+            url : coffee.link
+          }
+        ],
+        image : {
+          url : coffee.picture,
+          description : coffee.name 
+        }
+      }
+      carousel.cards.push(card)
+    })
+    instance.getVariable().then((client : any)=>{
+      client.pushCardBundleInConversationThread(carousel)
+    })
+  }
+
   const list = coffees.map((coffee)=>{
     return(
       <div>
@@ -63,10 +99,12 @@ export default function Home() {
   })
 
 
+
   return (
     <div>
-      <button onClick={() => insertText}>Envoyer</button>
+      <button onClick={() => insertText}>Send</button>
       {list}
+      <button onClick={insertBundle}>Send everything</button>
     </div>
   )
 }
