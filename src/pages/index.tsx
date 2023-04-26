@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Singleton from "./designpattern/singleton"
 import { coffees, Product } from "./products";
 const instance = Singleton.getInstance()
@@ -24,11 +24,23 @@ type Carousel = {
   cards: Card[]
 }
 
+type Intent = {
+  "key": string,
+  "payload" : {
+    any  : Product
+  }
+}
+  
+
 
 export default function Home() {
-
+  const [usedWords, setUsedWords] = useState<string[]>([])
+  const [wordsInMessage, setWordsInMessage] = useState<string[]>([])
   useEffect(()=>{
-    instance.setVariable((window as any).idzCpa.init())
+    instance.setVariable((window as any).idzCpa.init({
+      onIntent : handleIntent,
+      onTrigger : handleTrigger
+    }))
   })
 
   function insertText(){
@@ -90,14 +102,37 @@ export default function Home() {
     })
   }
 
+  function handleIntent(intents : Intent[]){
+    setUsedWords(intents.map(intent=>{
+      return(
+        intent.payload.any.name
+      )
+    }))
+  }
+
+  function handleTrigger(strings : string[]){
+    setWordsInMessage(strings)
+  }
+
   const list = coffees.map((coffee)=>{
     return(
       <div>
-        <button onClick={() => insertCard(coffee)}>Envoyer {coffee.name}</button>
+        <button onClick={() => insertCard(coffee)}>Send {coffee.name}</button>
       </div>
     )
   })
 
+  const listUsed = usedWords.map(usedWord=>{
+    return(
+      <p>{usedWord}</p>
+    )
+  })
+
+  const listInMessage = wordsInMessage.map(wordInSentence=>{
+    return(
+      <p>{wordInSentence}</p>
+    )
+  })
 
 
   return (
@@ -105,6 +140,14 @@ export default function Home() {
       <button onClick={() => insertText}>Send</button>
       {list}
       <button onClick={insertBundle}>Send everything</button>
+      <div>
+        <p>Used words :</p>
+        {listUsed}
+      </div>
+      <div>
+        <p>Words in message : </p>
+        {listInMessage}
+      </div>
     </div>
   )
 }

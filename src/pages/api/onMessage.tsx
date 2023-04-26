@@ -45,7 +45,6 @@ type Commande = {
     "messageId": string,
     "actions": Action[]
 }
-    
 
 export default async function handler(req : NextApiRequest,res : NextApiResponse){
     await runMiddleware(req, res, cors)
