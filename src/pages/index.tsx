@@ -51,7 +51,6 @@ export default function Home() {
         <button onClick={() => {setState(<Buttons func={changeState}/>); setBase(true)}}>Return</button>
         <h1>Product List</h1>
       </div> }
-
       {state}
     </div>
   )

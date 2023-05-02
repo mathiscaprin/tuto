@@ -183,14 +183,13 @@ export default function Home7() {
   }
 
   const listCoffee = coffees.map(coffee=>{
-      let promo = coffee.promo ? "red" : "black"
       if (wordsInMessage.length == 0 || wordsInMessage.includes(coffee.name)){
-        let border = usedWords.includes(coffee.name) ? '1px solid green' : '1px solid rgba(5,20,97,0.14);'
         return(
-          <div onClick={()=>setProfile(coffee.name)}  className="card" style={{boxShadow:border}}>
+          <div onClick={()=>setProfile(coffee.name)}  className="card">
           <img src={coffee.picture}/>
-          <div style={{border:border, padding:5, borderRadius:10}}className="card-right">
-            <p style={{color : promo}}>{coffee.name}</p>
+          <div style={{padding:5, borderRadius:10}}className="card-right">
+            <p>{coffee.name}{coffee.promo ? <p>En Promo</p> : <></>}</p>
+
           </div>
           <img className="greaterThan" src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg"/>
         </div>
@@ -202,11 +201,22 @@ export default function Home7() {
       }
   })
 
+  const listUsed = coffees.map(coffee=>{
+    return(
+      usedWords.includes(coffee.name) ? <p onClick={()=>setProfile(coffee.name)} >{coffee.name}</p> : <></>
+    )
+  })
+
   return (
     <div>
       {wordsInMessage.length == 0 ? <></> : <button onClick={()=>setWordsInMessage([])}>Return</button>}
       {profile === "" ? (
         <div className="list">
+          {usedWords.length == 0 ? <></> : <div className="listUsed">
+            <p>Suggestions :</p> 
+            {listUsed}
+          </div>}
+
           {listCoffee}
           <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
           <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.promo))}>Send Promo</button>
