@@ -5,7 +5,6 @@ import Home4b from "./index4b";
 import Home4c from "./index4c";
 import Home7 from "./index7"
 
-
 function Buttons({func} : {func : (func : SetStateAction<JSX.Element>)=>void}){
 
     const versions = [<Home3/>,<Home4a/>,<Home4b />,<Home4c />,<Home7/>]
@@ -37,7 +36,6 @@ export default function Home() {
 
   const [state, setState] = useState(<Buttons func={changeState}/>)
   const [base, setBase] = useState(true)
-
 
   return(
     <div className="index">

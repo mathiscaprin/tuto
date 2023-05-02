@@ -10,7 +10,6 @@ async function productAPI(){
   return coffees
 }
 
-
 type Action = {
   type: "LINK";
   title: string;
@@ -67,8 +66,6 @@ export default function Home4b() {
   const [coffees, setCoffees] = useState<Product[]>([])
   const [profile, setProfile] = useState("")
 
-
-
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init())
     if (coffees.length == 0){
@@ -108,8 +105,6 @@ export default function Home4b() {
     })
   }
 
-
-
   const listCoffee = coffees.map(coffee=>{
     return(
       <div onClick={()=>{setProfile(coffee.name)}} className="card">
@@ -122,7 +117,6 @@ export default function Home4b() {
   
     )
   })
-
 
   return (
     <div className="list">

@@ -4,13 +4,11 @@ import { Product } from "./api/products";
 import { api } from "./consts";
 const instance = Singleton.getInstance()
 
-
 async function productAPI(){
   const res = await fetch(api)
   const coffees = await res.json()
   return coffees
 }
-
 
 type Action = {
   type: "LINK";
@@ -94,8 +92,6 @@ export default function Home7() {
   const [wordsInMessage, setWordsInMessage] = useState<string[]>([])
   const [coffees, setCoffees] = useState<Product[]>([])
   const [profile, setProfile] = useState("")
-
-
 
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init({

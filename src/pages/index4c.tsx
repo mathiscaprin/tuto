@@ -4,13 +4,11 @@ import { Product } from "./api/products";
 import { api } from "./consts";
 const instance = Singleton.getInstance()
 
-
 async function productAPI(){
   const res = await fetch(api)
   const coffees = await res.json()
   return coffees
 }
-
 
 type Action = {
   type: "LINK";
@@ -84,15 +82,10 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
   }
 }
 
-
 export default function Home4c() {
-
 
   const [coffees, setCoffees] = useState<Product[]>([])
   const [profile, setProfile] = useState("")
-
-
-
 
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init())
@@ -163,9 +156,6 @@ export default function Home4c() {
     })
   }
 
-
-
-
   const listCoffee = coffees.map(coffee=>{
     return(
       <div onClick={()=>{setProfile(coffee.name)}}  className="card">
@@ -189,12 +179,10 @@ export default function Home4c() {
               <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.promo))}>Send Promo</button>
           </div>
         </div>
-        
     ):(
       <Profile back={setProfile} insertText={insertText} coffee={coffees.findLast((coffee)=>coffee.name == profile)} insertCard={insertCard}></Profile>)
        }
       
     </div>
-      
   )
 }
