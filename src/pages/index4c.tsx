@@ -46,10 +46,10 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
       currency: 'EUR',
     });
 
-    const price = coffee.promo ? 
+    const price = coffee.discount ? 
     <>
-      <p>Price <span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.valeurPromo)}</p>
-      <p>Price per ten <span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.valeurPromo)}</p>
+      <p>Price <span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.discountAmount)}</p>
+      <p>Price per ten <span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.discountAmount)}</p>
     </> : 
     <>
       <p>Price {euro.format(coffee.price)}</p>
@@ -157,7 +157,7 @@ export default function Home4c() {
       <div onClick={()=>{setProfile(coffee.name)}}  className="card">
         <img src={coffee.picture}  className="coffeePic"/>
         <div className="card-right">
-          <p>{coffee.name}</p>{coffee.promo ? <p>En Promo</p> : <></>}
+          <p>{coffee.name}</p>{coffee.discount ? <p>on discount</p> : <></>}
         </div>
         <img className="greaterThan" src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg"/>
       </div>
@@ -175,7 +175,7 @@ export default function Home4c() {
           
           <div className="sendBundle">
               <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
-              <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.promo))}>Send Promo</button>
+              <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount))}>Send discount</button>
           </div>
         </div>
     ):(
