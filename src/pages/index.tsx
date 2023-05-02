@@ -17,7 +17,7 @@ function Buttons({func} : {func : (func : SetStateAction<JSX.Element>)=>void}){
     }
     const buttons = versions.map((version)=>{
       return(
-        <a className="versions" onClick={()=>func(version)}> Version {version.type.name} : {description[version.type.name]}</a>
+        <a key={version.type.name} className="versions" onClick={()=>func(version)}> Version {version.type.name} : {description[version.type.name]}</a>
       )
     })
     return(

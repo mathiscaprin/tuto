@@ -167,11 +167,11 @@
     width: fit-content;
     background-color: var(--CPA-color-action);
     border: 1px solid var(--CPA-color-neutral-200);
-    box-shadow: var(--CPA-shadow-small);
     padding: 10px;
     border-radius: 20px;
     text-align: left;
     color: white;
+    box-shadow: var(--CPA-shadow-small);
 }
 
 .mainButton:hover{

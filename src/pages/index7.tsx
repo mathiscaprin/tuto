@@ -176,7 +176,7 @@ export default function Home7() {
   const listCoffee = coffees.map(coffee=>{
       if (wordsInMessage.length == 0 || wordsInMessage.includes(coffee.name)){
         return(
-          <div onClick={()=>setProfile(coffee.name)}  className="card">
+          <div onClick={()=>setProfile(coffee.name)}  className="card" key={coffee.name}>
           <img src={coffee.picture} className="coffeePic"/>
           <div className="card-right">
             <p>{coffee.name}</p>{coffee.discount ? <p>on discount</p> : <></>}

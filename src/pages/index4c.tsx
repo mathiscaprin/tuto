@@ -154,7 +154,7 @@ export default function Home4c() {
 
   const listCoffee = coffees.map(coffee=>{
     return(
-      <div onClick={()=>{setProfile(coffee.name)}}  className="card">
+      <div onClick={()=>{setProfile(coffee.name)}}  className="card" key={coffee.name}>
         <img src={coffee.picture}  className="coffeePic"/>
         <div className="card-right">
           <p>{coffee.name}</p>{coffee.discount ? <p>on discount</p> : <></>}
