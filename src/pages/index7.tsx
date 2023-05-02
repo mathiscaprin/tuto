@@ -211,16 +211,20 @@ export default function Home7() {
     <div>
       {wordsInMessage.length == 0 ? <></> : <button onClick={()=>setWordsInMessage([])}>Return</button>}
       {profile === "" ? (
-        <div className="list">
-          {usedWords.length == 0 ? <></> : <div className="listUsed">
-            <p>Suggestions :</p> 
-            {listUsed}
-          </div>}
-
-          {listCoffee}
-          <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
-          <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.promo))}>Send Promo</button>
-        </div>
+                <div>
+                  {usedWords.length == 0 ? <></> : 
+                  <div className="listUsed">
+                    <p>Suggestions :</p> 
+                    {listUsed}
+                  </div>}
+                  <div className="list">
+                    {listCoffee}
+                  </div>
+                  <div className="sendBundle">
+                      <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
+                      <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.promo))}>Send Promo</button>
+                  </div>
+              </div>
       ):(
         <Profile back={setProfile} insertText={insertText} coffee={coffees.findLast((coffee)=>coffee.name == profile)} insertCard={insertCard}></Profile> 
       )}
