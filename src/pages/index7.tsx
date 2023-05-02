@@ -179,11 +179,10 @@ export default function Home7() {
           <div onClick={()=>setProfile(coffee.name)}  className="card" key={coffee.name}>
           <img src={coffee.picture} className="coffeePic"/>
           <div className="card-right">
-            <p>{coffee.name}</p>{coffee.discount ? <p>on discount</p> : <></>}
+            <p>{coffee.name}</p>{coffee.discount ? <p>On discount</p> : <></>}
           </div>
           <img className="greaterThan" src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg"/>
-        </div>
-        )
+        </div>)
       }else{
         return(
           <></>

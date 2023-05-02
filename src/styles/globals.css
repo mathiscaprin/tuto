@@ -10,9 +10,10 @@
     display: flex;
     flex-direction: column;
     row-gap: 40px;
-    background-color: var(--CPA-color-neutral-300);
+    background-color: var(--CPA-color-neutral-200);
     padding: 30px;
     border-radius: 20px;
+    box-shadow: var(--CPA-shadow-default);
 }
 
 .homeButtons a{
