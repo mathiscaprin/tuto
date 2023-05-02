@@ -60,6 +60,7 @@
 
 .card p{
     font : var(--CPA-text-default);
+    margin : 0;
 }
 
 .card button{
@@ -86,7 +87,7 @@
 .card-right{
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    row-gap: 5px;
     grid-column: 2;
     padding: 5px;
     border-radius: 10px;
