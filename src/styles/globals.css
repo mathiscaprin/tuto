@@ -1,1 +1,114 @@
+@import 'https://static.iadvize.com/conversation-panel-app-lib/2.9.0/idzcpa.base.css';
 
+.card{
+    box-shadow: var(--CPA-shadow-default);
+    padding: var(--CPA-vertical-padding);
+    padding-left: 50px;
+    padding-right: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.card:hover{
+    box-shadow: var(--CPA-shadow-large);
+    transition: 50ms;
+}
+
+.card p{
+    font : var(--CPA-text-default-bold);
+    text-align: end;
+}
+
+.card button{
+    color: var(--CPA-color-text-main);
+    background-color: var(--CPA-color-neutral-200);
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.card-right{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.profile{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap : 20px;
+    text-align: center;
+}
+
+.profileHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 70%;
+}
+
+.profileHeader button{
+    background-color: white;
+    padding: 5px;
+    border: none;
+}
+
+.profileTop{
+    display: flex;
+    flex-direction: row;
+    text-align: end;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.profileTop img{
+    max-width: 150px;
+    height: 100px;
+}
+
+
+.profileTop div{
+    width: 40%;
+}
+
+.top-right{
+    display: flex;
+    flex-direction: column;
+    gap : 10px
+}
+
+.profileMiddle{
+    font : var(--CPA-text-small-bold);
+    display: flex;
+    flex-direction: column;
+}
+
+.greaterThan{
+    height: 30px;
+    width: auto;
+}
+
+.mainButton{
+    background-color: var(--CPA-color-background);
+    border: 1px solid var(--CPA-color-neutral-200);
+    box-shadow: var(--CPA-shadow-default);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.mainButton:hover{
+    box-shadow: var(--CPA-shadow-large);
+    transition: 50ms;
+}
+
+.list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap : 10px
+}

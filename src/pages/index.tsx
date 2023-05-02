@@ -1,153 +1,43 @@
-import { useEffect, useState } from "react"
+import { SetStateAction, useEffect, useState } from "react"
 import Singleton from "./designpattern/singleton"
-import { coffees, Product } from "./products";
+import { coffees, Product } from "./api/products";
 const instance = Singleton.getInstance()
+import Home3 from "./index3";
+import Home4a from "./index4a";
+import Home4b from "./index4b";
+import Home4c from "./index4c";
+import Home7 from "./index7"
 
-type Action = {
-  type: "LINK";
-  title: string;
-  url: string;
-};
 
-type Card = {
-  title?: string;
-  text?: string;
-  actions: Action[];
-  image?: {
-      url: string;
-      description: string;
-  }
-};
-
-type Carousel = {
-  title?:string;
-  cards: Card[]
-}
-
-type Intent = {
-  "key": string,
-  "payload" : {
-    any  : Product
-  }
-}
+function Buttons({func} : {func : (func : SetStateAction<JSX.Element>)=>void}){
   
-
+    const versions = [<Home3/>,<Home4a/>,<Home4b/>,<Home4c/>,<Home7/>]
+    const buttons = versions.map((version)=>{
+      return(
+        <button onClick={()=>func(version)}> Version {version.type.name}</button>
+      )
+    })
+    return(
+      <div>
+        {buttons}
+      </div>
+      )
+}
 
 export default function Home() {
-  const [usedWords, setUsedWords] = useState<string[]>([])
-  const [wordsInMessage, setWordsInMessage] = useState<string[]>([])
-  useEffect(()=>{
-    instance.setVariable((window as any).idzCpa.init({
-      onIntent : handleIntent,
-      onTrigger : handleTrigger
-    }))
-  })
 
-  function insertText(){
-    instance.getVariable().then((client : any)=>{
-      client.insertTextInComposeBox("Hello World")
-    })
+  function changeState(newState : SetStateAction<JSX.Element>){
+    setState(newState)
   }
 
-  function insertCard(coffee : Product){
-    const card : Card = {
-      title : coffee.name,
-      text : coffee.description,
-      
-      actions : [
-        {
-          type : "LINK",
-          title : coffee.name,
-          url : coffee.link
-        }
-      ],
-      image : {
-        url : coffee.picture,
-        description : coffee.name 
-      }
+  const [state, setState] = useState(<Buttons func={changeState}/>)
 
-    }
-    instance.getVariable().then((client : any)=>{
-      client.pushCardInConversationThread(card)
-    })
-  }
-
-  function insertBundle(){
-    const carousel : Carousel = {
-      title: "Coffee",
-      cards : []
-    }
-
-    coffees.forEach((coffee)=>{
-      let card : Card = {
-        title : coffee.name,
-        text : coffee.description,
-        
-        actions : [
-          {
-            type : "LINK",
-            title : coffee.name,
-            url : coffee.link
-          }
-        ],
-        image : {
-          url : coffee.picture,
-          description : coffee.name 
-        }
-      }
-      carousel.cards.push(card)
-    })
-    instance.getVariable().then((client : any)=>{
-      client.pushCardBundleInConversationThread(carousel)
-    })
-  }
-
-  function handleIntent(intents : Intent[]){
-    setUsedWords(intents.map(intent=>{
-      return(
-        intent.payload.any.name
-      )
-    }))
-  }
-
-  function handleTrigger(strings : string[]){
-    setWordsInMessage(strings)
-  }
-
-  const list = coffees.map((coffee)=>{
-    return(
-      <div>
-        <button onClick={() => insertCard(coffee)}>Send {coffee.name}</button>
-      </div>
-    )
-  })
-
-  const listUsed = usedWords.map(usedWord=>{
-    return(
-      <p>{usedWord}</p>
-    )
-  })
-
-  const listInMessage = wordsInMessage.map(wordInSentence=>{
-    return(
-      <p>{wordInSentence}</p>
-    )
-  })
-
-
-  return (
-    <div>
-      <button onClick={() => insertText}>Send</button>
-      {list}
-      <button onClick={insertBundle}>Send everything</button>
-      <div>
-        <p>Used words :</p>
-        {listUsed}
-      </div>
-      <div>
-        <p>Words in message : </p>
-        {listInMessage}
-      </div>
+  return(
+    <div style={{padding:10}}>
+      {state}
+      <hr/>
+      <button onClick={() => setState(<Buttons func={changeState}/>)}>retour</button>
     </div>
   )
+
 }

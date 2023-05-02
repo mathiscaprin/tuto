@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Cors from 'cors'
-import { coffees } from '../products'
+import { coffees } from './products'
 
 const cors = Cors({
     methods: ['POST', 'GET', 'HEAD'],
@@ -11,7 +11,6 @@ function runMiddleware(
     res: NextApiResponse,
     fn: Function
   ) {
-
     return new Promise((resolve, reject) => {
       fn(req, res, (result: any) => {
         if (result instanceof Error) {
