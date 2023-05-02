@@ -12,6 +12,7 @@ async function productAPI(){
 
 export default function Home3() {
 
+
   const [coffees, setCoffees] = useState<Product[]>([])
 
   useEffect(()=>{

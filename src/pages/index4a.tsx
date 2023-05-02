@@ -21,16 +21,16 @@ function Profile({back, insertText, coffee} : {back : Dispatch<SetStateAction<st
     )
   }else{
     return(
-      <div className="profile">
+      <div className="profile"> 
         <div className="profileHeader">
-          <h1>Products profile</h1>
+          <h1 id="productProfile">Products profile</h1>
+          <h1 id="coffeeName">{coffee.name}</h1>
           <button onClick={() => back("")}>X</button>
         </div>
-        <h1>{coffee.name}</h1>
         <div className="profileTop">
           <img src={coffee.picture}/>
           <div className="top-right">
-            <h2>{coffee.description}</h2>
+            <p>{coffee.description}</p>
             <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
           </div>
         </div>
@@ -69,7 +69,7 @@ export default function Home4a() {
 
     return(
       <div onClick={()=>setProfile(coffee.name)} className="card">
-        <img src={coffee.picture}/>
+        <img src={coffee.picture} className="coffeePic"/>
         <div className="card-right">
           <p>{coffee.name}</p>
         </div>

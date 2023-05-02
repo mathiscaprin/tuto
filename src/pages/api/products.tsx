@@ -79,7 +79,7 @@ export const coffees : Product[] = [
         valeurPromo : 1
     },{
         name : "Caramello",
-        description : "the taste of sweet comfort that comes from blending in a biscuity caramel flavour into our silky-textured South American Arabicas.",
+        description : "The taste of sweet comfort that comes from blending in a biscuity caramel flavour into our silky-textured South American Arabicas.",
         price : 0.49,
         pricePerTen : 4.90,
         picture : "https://www.nespresso.com/ecom/medias/sys_master/public/26728687829022/OL-Caramello.png?impolicy=product&imwidth=90",

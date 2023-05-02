@@ -38,16 +38,18 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
     return(
       <div className="profile">
         <div className="profileHeader">
-          <h1>Products profile</h1>
+        <h1 id="productProfile">Products profile</h1>
+          <h1 id="coffeeName">{coffee.name}</h1>
           <button onClick={() => back("")}>X</button>
         </div>
-        <h1>{coffee.name}</h1>
         <div className="profileTop">
           <img src={coffee.picture}/>
           <div className="top-right">
-            <h2>{coffee.description}</h2>
-            <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
-            <button className="mainButton" onClick={()=>insertCard(coffee)}>Send card</button>
+            <p>{coffee.description}</p>
+            <div>
+              <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
+              <button className="mainButton" onClick={()=>insertCard(coffee)}>Send card</button>
+            </div>
           </div>
         </div>
         <div className="profileMiddle">

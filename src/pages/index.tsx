@@ -10,15 +10,22 @@ import Home7 from "./index7"
 
 
 function Buttons({func} : {func : (func : SetStateAction<JSX.Element>)=>void}){
-  
+
     const versions = [<Home3/>,<Home4a/>,<Home4b/>,<Home4c/>,<Home7/>]
+    const description : {[version : string] : string} = {
+      "Home3" : "basic version",
+      "Home4a" : "Add insert text",
+      "Home4b" :  "Add insert card",
+      "Home4c" : "Add card bundle",
+      "Home7" : "Add Intent and Triggers"
+    }
     const buttons = versions.map((version)=>{
       return(
-        <button onClick={()=>func(version)}> Version {version.type.name}</button>
+        <a onClick={()=>func(version)}> Version {version.type.name} : {description[version.type.name]}</a>
       )
     })
     return(
-      <div>
+      <div className="homeButtons">
         {buttons}
       </div>
       )
@@ -28,15 +35,24 @@ export default function Home() {
 
   function changeState(newState : SetStateAction<JSX.Element>){
     setState(newState)
+    setBase(false)
   }
 
   const [state, setState] = useState(<Buttons func={changeState}/>)
+  const [base, setBase] = useState(true)
 
   return(
-    <div style={{padding:10}}>
+    <div style={{padding:30}}>
+      {base? 
+      <div>
+        <h1>Choose version : </h1>
+      </div> : 
+      <div className="head">
+        <button onClick={() => {setState(<Buttons func={changeState}/>); setBase(true)}}>Return</button>
+        <h1>Product List</h1>
+      </div> }
+
       {state}
-      <hr/>
-      <button onClick={() => setState(<Buttons func={changeState}/>)}>retour</button>
     </div>
   )
 

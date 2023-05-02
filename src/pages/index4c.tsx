@@ -60,16 +60,19 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
     return(
       <div className="profile">
         <div className="profileHeader">
-          <h1>Products profile</h1>
+          <h1 id="productProfile">Products profile</h1>
+          <h1 id="coffeeName">{coffee.name}</h1>
           <button onClick={() => back("")}>X</button>
         </div>
-        <h1>{coffee.name}</h1>
         <div className="profileTop">
           <img src={coffee.picture}/>
           <div className="top-right">
-            <h2>{coffee.description}</h2>
-            <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
-            <button className="mainButton" onClick={()=>insertCard(coffee)}>Send card</button>
+            <p>{coffee.description}</p>
+            <div>
+              <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
+              <button className="mainButton" onClick={()=>insertCard(coffee)}>Send card</button>
+            </div>
+
           </div>
         </div>
         <div className="profileMiddle">
@@ -178,9 +181,16 @@ export default function Home4c() {
 
   return (
     <div className="list">
-      {profile=="" ? listCoffee : <Profile back={setProfile} insertText={insertText} coffee={coffees.findLast((coffee)=>coffee.name == profile)} insertCard={insertCard}></Profile> }
-      <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
-      <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.promo))}>Send Promo</button>
+      {profile==="" ? (
+        <div className="list">
+        {listCoffee}
+        <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
+        <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.promo))}>Send Promo</button>
+      </div>
+    ):(
+      <Profile back={setProfile} insertText={insertText} coffee={coffees.findLast((coffee)=>coffee.name == profile)} insertCard={insertCard}></Profile>)
+       }
+      
     </div>
       
   )

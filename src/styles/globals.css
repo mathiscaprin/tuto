@@ -1,25 +1,55 @@
 @import 'https://static.iadvize.com/conversation-panel-app-lib/2.9.0/idzcpa.base.css';
 
+.homeButtons{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+}
+
+.homeButtons a{
+    font-size: 20px;
+}
+
+.homeButtons a:hover{
+    text-decoration: underline;
+}
+
+.head{
+    display: grid;
+    grid-template-columns:repeat(5, 1fr);
+    margin-bottom: 20px;
+}
+
+.head button{
+    grid-column: 1;
+
+}
+
+.head h1{
+    grid-column: 3;
+    text-align: center;
+}
+
+
 .card{
-    box-shadow: var(--CPA-shadow-default);
+    box-shadow: var(--CPA-shadow-small);
     padding: var(--CPA-vertical-padding);
     padding-left: 50px;
     padding-right: 50px;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
     align-items: center;
-    justify-content: space-between;
     width: 100%;
 }
 
 .card:hover{
-    box-shadow: var(--CPA-shadow-large);
+    box-shadow: var(--CPA-shadow-default);
     transition: 50ms;
 }
 
 .card p{
-    font : var(--CPA-text-default-bold);
-    text-align: end;
+    font : var(--CPA-text-default);
 }
 
 .card button{
@@ -29,11 +59,22 @@
     padding: 10px;
 }
 
+.card .coffeePic{
+    grid-column: 1;
+}
+
+.greaterThan{
+    grid-column: 6;
+    height: 30px;
+    width: auto;
+    
+}
+
 .card-right{
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     gap: 5px;
+    grid-column: 3;
 }
 
 .profile{
@@ -45,63 +86,73 @@
 }
 
 .profileHeader{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    gap: 70%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
 }
 
 .profileHeader button{
     background-color: white;
     padding: 5px;
     border: none;
+    grid-column: 5;
+}
+
+.profileHeader #productProfile{
+    grid-column: 1;
+}
+
+.profileHeader #coffeeName{
+    grid-column: 3;
 }
 
 .profileTop{
     display: flex;
     flex-direction: row;
-    text-align: end;
+    text-align: start;
     justify-content: space-around;
     align-items: center;
+    font : var(--CPA-text-default);
 }
 
 .profileTop img{
-    max-width: 150px;
-    height: 100px;
-}
-
-
-.profileTop div{
-    width: 40%;
+    max-width: 100px;
+    height: 70px;
 }
 
 .top-right{
+    width: 60%;
     display: flex;
     flex-direction: column;
     gap : 10px
 }
 
+.top-right div{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
 .profileMiddle{
-    font : var(--CPA-text-small-bold);
+    font : var(--CPA-text-default);
     display: flex;
     flex-direction: column;
 }
 
-.greaterThan{
-    height: 30px;
-    width: auto;
-}
 
 .mainButton{
-    background-color: var(--CPA-color-background);
+    width: fit-content;
+    background-color: var(--CPA-color-action);
     border: 1px solid var(--CPA-color-neutral-200);
-    box-shadow: var(--CPA-shadow-default);
+    box-shadow: var(--CPA-shadow-small);
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 20px;
+    text-align: left;
+    color: white;
 }
 
 .mainButton:hover{
-    box-shadow: var(--CPA-shadow-large);
+    box-shadow: var(--CPA-shadow-default);
     transition: 50ms;
 }
 
