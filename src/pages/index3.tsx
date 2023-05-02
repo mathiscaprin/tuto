@@ -27,7 +27,7 @@ export default function Home3() {
   const listCoffee = coffees.map(coffee=>{
     return(
       <div className="card">
-        <img src={coffee.picture}/>
+        <img src={coffee.picture} className="coffeePic"/>
         <div className="card-right">
           <p >{coffee.name}</p>
         </div>

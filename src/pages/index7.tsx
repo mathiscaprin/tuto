@@ -88,8 +88,6 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
   }
 }
 
-
-
 export default function Home7() {
   const [usedWords, setUsedWords] = useState<string[]>([])
   const [wordsInMessage, setWordsInMessage] = useState<string[]>([])
@@ -209,7 +207,7 @@ export default function Home7() {
 
   return (
     <div>
-      {wordsInMessage.length == 0 ? <></> : <button onClick={()=>setWordsInMessage([])}>Return</button>}
+      {wordsInMessage.length == 0 || profile !== "" ? <></> : <button className="mainButton" onClick={()=>setWordsInMessage([])}>Return</button>}
       {profile === "" ? (
                 <div>
                   {usedWords.length == 0 ? <></> : 
