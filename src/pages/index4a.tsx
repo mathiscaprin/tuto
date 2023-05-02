@@ -24,7 +24,6 @@ function Profile({back, insertText, coffee} : {back : Dispatch<SetStateAction<st
     return(
       <div className="profile"> 
         <div className="profileHeader">
-          <h2 id="productProfile">Product profile: </h2>
           <h2 id="coffeeName">{coffee.name}</h2>
           <button onClick={() => back("")}>X</button>
         </div>
