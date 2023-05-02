@@ -5,14 +5,12 @@
     font : var(--CPA-text-default);
 }
 
-
-
 .homeButtons{
     margin-top: 40px;
     display: flex;
     flex-direction: column;
     row-gap: 40px;
-    background-color: var(--CPA-color-neutral-500);
+    background-color: var(--CPA-color-neutral-300);
     padding: 30px;
     border-radius: 20px;
 }
@@ -153,6 +151,11 @@
     font : var(--CPA-text-default);
     display: flex;
     flex-direction: column;
+    
+}
+
+.profileMiddle p{
+    margin: 0;
 }
 
 
@@ -172,6 +175,11 @@
     transition: 50ms;
 }
 
+.title{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
 .list{
     display: flex;
     flex-direction: column;
@@ -188,3 +196,4 @@
 .previousPrice{
     text-decoration: line-through;
 }
+

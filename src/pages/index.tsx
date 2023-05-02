@@ -7,7 +7,7 @@ import Home7 from "./index7"
 
 function Buttons({func} : {func : (func : SetStateAction<JSX.Element>)=>void}){
 
-    const versions = [<Home3/>,<Home4a/>,<Home4b />,<Home4c />,<Home7/>]
+    const versions = [<Home3/>,<Home4a/>,<Home4b/>,<Home4c/>,<Home7/>]
     const description : {[version : string] : string} = {
       "Home3" : "basic version",
       "Home4a" : "Add insert text",
@@ -41,11 +41,10 @@ export default function Home() {
     <div className="index">
       {base? 
       <div>
-        <h1>Choose version : </h1>
+        <h1>Choose version</h1>
       </div> : 
       <div className="head">
         <img src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg" onClick={() => {setState(<Buttons func={changeState}/>); setBase(true)}}/>
-        <h1>Product List</h1>
       </div> }
       {state}
     </div>

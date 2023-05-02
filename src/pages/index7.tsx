@@ -207,6 +207,7 @@ export default function Home7() {
       {wordsInMessage.length == 0 || profile !== "" ? <></> : <button className="mainButton" onClick={()=>setWordsInMessage([])}>Return</button>}
       {profile === "" ? (
                 <div>
+                  <div className="title">Product</div>
                   {usedWords.length == 0 ? <></> : 
                   <div className="listUsed">
                     <p>Suggestions :</p> 

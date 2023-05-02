@@ -171,9 +171,11 @@ export default function Home4c() {
     <div className="list">
       {profile==="" ? (
         <div>
+          <div className="title">Product</div>
           <div className="list">
             {listCoffee}
           </div>
+          
           <div className="sendBundle">
               <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
               <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.promo))}>Send Promo</button>

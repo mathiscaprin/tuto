@@ -79,7 +79,12 @@ export default function Home4a(){
 
   return (
     <div className="list">
-      {profile=="" ? listCoffee : <Profile back={setProfile} insertText={insertText} coffee={coffees.findLast((coffee)=>coffee.name == profile)}></Profile> }
+      {profile=="" ? 
+      <div>
+        <div className="title">Product</div>
+        {listCoffee}
+      </div>
+       : <Profile back={setProfile} insertText={insertText} coffee={coffees.findLast((coffee)=>coffee.name == profile)}></Profile> }
     </div>
   )
 }

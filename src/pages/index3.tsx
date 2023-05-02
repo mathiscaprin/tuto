@@ -11,7 +11,7 @@ async function productAPI(){
 }
 
 export default function Home3() {
-  
+
   const [coffees, setCoffees] = useState<Product[]>([])
 
   useEffect(()=>{
@@ -37,6 +37,8 @@ export default function Home3() {
 
   return (
     <div className="list">
+      <div className="title">Product</div>
+
       {listCoffee}
     </div>
   )
