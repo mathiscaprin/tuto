@@ -3,7 +3,6 @@
 .index{
     padding: 30px;
     font : var(--CPA-text-default);
-
 }
 
 
@@ -30,6 +29,7 @@
     display: grid;
     grid-template-columns:repeat(3, 1fr);
     margin-bottom: 20px;
+    align-items: center;
 }
 
 .head img{
