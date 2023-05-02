@@ -45,8 +45,8 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
           <img src={coffee.picture}/>
           <div className="top-right">
             <p>{coffee.description}</p>
-            <p>Price {coffee.price}€</p>
-            <p>Price per ten {coffee.pricePerTen}€</p>
+            <p>{coffee.price}€</p>
+            <p>Per ten {coffee.pricePerTen}€</p>
             <div>
               <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
               <button className="mainButton" onClick={()=>insertCard(coffee)}>Send card</button>
@@ -59,7 +59,6 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
 }
 
 export default function Home4b() {
-
   const [coffees, setCoffees] = useState<Product[]>([])
   const [profile, setProfile] = useState("")
 
@@ -83,7 +82,6 @@ export default function Home4b() {
     const card : Card = {
       title : coffee.name,
       text : coffee.description,
-      
       actions : [
         {
           type : "LINK",
@@ -95,13 +93,11 @@ export default function Home4b() {
         url : coffee.picture,
         description : coffee.name 
       }
-
     }
     instance.getVariable().then((client : any)=>{
       client.pushCardInConversationThread(card)
     })
   }
-
   const listCoffee = coffees.map(coffee=>{
     return(
       <div onClick={()=>{setProfile(coffee.name)}} className="card" key={coffee.name}>
@@ -111,7 +107,6 @@ export default function Home4b() {
         </div>
         <img className="greaterThan" src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg"/>
       </div>
-  
     )
   })
 

@@ -40,22 +40,19 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
       </div>
     )
   }else{
-
     let euro = Intl.NumberFormat('en-DE', {
       style: 'currency',
       currency: 'EUR',
     });
-
     const price = coffee.discount ? 
     <>
-      <p>Price <span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.discountAmount)}</p>
-      <p>Price per ten <span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.discountAmount)}</p>
+      <p><span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.discountAmount)}</p>
+      <p>Per ten <span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.discountAmount)}</p>
     </> : 
     <>
-      <p>Price {euro.format(coffee.price)}</p>
-      <p>Price per ten {euro.format(coffee.pricePerTen)}</p>
+      <p>{euro.format(coffee.price)}</p>
+      <p>Per ten {euro.format(coffee.pricePerTen)}</p>
     </>
-
     return(
       <div className="profile">
         <div className="profileHeader">
@@ -82,7 +79,6 @@ export default function Home4c() {
 
   const [coffees, setCoffees] = useState<Product[]>([])
   const [profile, setProfile] = useState("")
-
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init())
     if (coffees.length == 0){
@@ -102,8 +98,7 @@ export default function Home4c() {
   function insertCard(coffee : Product){
     const card : Card = {
       title : coffee.name,
-      text : coffee.description,
-      
+      text : coffee.description,    
       actions : [
         {
           type : "LINK",
@@ -115,7 +110,6 @@ export default function Home4c() {
         url : coffee.picture,
         description : coffee.name 
       }
-
     }
     instance.getVariable().then((client : any)=>{
       client.pushCardInConversationThread(card)
@@ -131,8 +125,7 @@ export default function Home4c() {
     listProduct.forEach((coffee)=>{
       let card : Card = {
         title : coffee.name,
-        text : coffee.description,
-        
+        text : coffee.description, 
         actions : [
           {
             type : "LINK",
@@ -172,16 +165,13 @@ export default function Home4c() {
           <div className="list">
             {listCoffee}
           </div>
-          
           <div className="sendBundle">
               <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
               <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount))}>Send discount</button>
           </div>
         </div>
     ):(
-      <Profile back={setProfile} insertText={insertText} coffee={coffees.findLast((coffee)=>coffee.name == profile)} insertCard={insertCard}></Profile>)
-       }
-      
+      <Profile back={setProfile} insertText={insertText} coffee={coffees.findLast((coffee)=>coffee.name == profile)} insertCard={insertCard}></Profile>)}
     </div>
   )
 }

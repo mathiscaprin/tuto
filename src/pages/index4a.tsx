@@ -31,8 +31,8 @@ function Profile({back, insertText, coffee} : {back : Dispatch<SetStateAction<st
           <img src={coffee.picture}/>
           <div className="top-right">
             <p>{coffee.description}</p>
-            <p>Price {coffee.price}€</p>
-            <p>Price per ten {coffee.pricePerTen}€</p>
+            <p>{coffee.price}€</p>
+            <p>Per ten {coffee.pricePerTen}€</p>
             <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
           </div>
         </div>
