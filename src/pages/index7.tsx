@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import Singleton from "./designpattern/singleton"
 import { Product } from "./api/products";
+import { api } from "./consts";
 const instance = Singleton.getInstance()
 
 
 async function productAPI(){
-  const res = await fetch(`http://localhost:3000/api/products`)
+  const res = await fetch(api)
   const coffees = await res.json()
   return coffees
 }
@@ -66,8 +67,8 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
     return(
       <div className="profile">
         <div className="profileHeader">
-          <h1 id="productProfile">Product profile: </h1>
-          <h1 id="coffeeName">{coffee.name}</h1>
+          <h2 id="productProfile">Product profile: </h2>
+          <h2 id="coffeeName">{coffee.name}</h2>
           <button onClick={() => back("")}>X</button>
         </div>
         <div className="profileTop">

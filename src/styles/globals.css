@@ -2,13 +2,20 @@
 
 .index{
     padding: 30px;
+    font : var(--CPA-text-default);
+
 }
+
+
 
 .homeButtons{
     margin-top: 40px;
     display: flex;
     flex-direction: column;
     row-gap: 40px;
+    background-color: var(--CPA-color-neutral-500);
+    padding: 30px;
+    border-radius: 20px;
 }
 
 .homeButtons a{

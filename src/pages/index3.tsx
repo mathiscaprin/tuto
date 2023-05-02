@@ -5,7 +5,7 @@ import { Product } from "./api/products"
 const instance = Singleton.getInstance()
 
 async function productAPI(){
-  const res = await fetch(`http://localhost:3000/api/products`)
+  const res = await fetch("http://localhost:3000/api/products")
   const coffees = await res.json()
   return coffees
 }

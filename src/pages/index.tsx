@@ -1,7 +1,4 @@
 import { SetStateAction, useState } from "react"
-import Singleton from "./designpattern/singleton"
-import { coffees, Product } from "./api/products";
-const instance = Singleton.getInstance()
 import Home3 from "./index3";
 import Home4a from "./index4a";
 import Home4b from "./index4b";
@@ -21,7 +18,7 @@ function Buttons({func} : {func : (func : SetStateAction<JSX.Element>)=>void}){
     }
     const buttons = versions.map((version)=>{
       return(
-        <a onClick={()=>func(version)}> Version {version.type.name} : {description[version.type.name]}</a>
+        <a className="versions" onClick={()=>func(version)}> Version {version.type.name} : {description[version.type.name]}</a>
       )
     })
     return(
