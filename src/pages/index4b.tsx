@@ -38,7 +38,7 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
     return(
       <div className="profile">
         <div className="profileHeader">
-        <h1 id="productProfile">Products profile</h1>
+        <h1 id="productProfile">Product profile: </h1>
           <h1 id="coffeeName">{coffee.name}</h1>
           <button onClick={() => back("")}>X</button>
         </div>
@@ -112,12 +112,13 @@ export default function Home4b() {
   const listCoffee = coffees.map(coffee=>{
     return(
       <div onClick={()=>setProfile(coffee.name)} className="card">
-        <img src={coffee.picture}/>
+        <img src={coffee.picture} className="coffeePic"/>
         <div className="card-right">
-          <p >{coffee.name}</p>
+          <p>{coffee.name}</p>
         </div>
         <img className="greaterThan" src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg"/>
       </div>
+  
     )
   })
 

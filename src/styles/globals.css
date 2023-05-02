@@ -59,13 +59,16 @@
 
 .card .coffeePic{
     grid-column: 1;
+    max-width: 100px;
+    height: 60px;
+    margin-left: 20px;
 }
 
 .greaterThan{
     grid-column: 3;
     height: 30px;
     width: auto;
-    
+    margin-left: 70%;
 }
 
 .card-right{
@@ -78,9 +81,7 @@
 .profile{
     display: flex;
     flex-direction: column;
-
     gap : 20px;
-    text-align: center;
 }
 
 .profileHeader{
@@ -91,9 +92,9 @@
 
 .profileHeader button{
     background-color: white;
-    padding: 5px;
     border: none;
     grid-column: 3;
+    margin-left: 70%;
 }
 
 .profileHeader #productProfile{
@@ -102,6 +103,7 @@
 
 .profileHeader #coffeeName{
     grid-column: 2;
+    margin-left: 20px;
 }
 
 .profileTop{

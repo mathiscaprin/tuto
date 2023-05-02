@@ -55,18 +55,18 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
     });
     const price = coffee.promo ? 
     <>
-      <p>Price <span style={{textDecoration : "line-through"}}>{euro.format(coffee.price)}€</span> {euro.format(coffee.price * coffee.valeurPromo)}</p>
-      <p>Price per ten <span style={{textDecoration : "line-through"}}>{euro.format(coffee.pricePerTen)}€</span> {euro.format(coffee.pricePerTen * coffee.valeurPromo)}€</p>
+      <p>Price <span style={{textDecoration : "line-through"}}>{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.valeurPromo)}</p>
+      <p>Price per ten <span style={{textDecoration : "line-through"}}>{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.valeurPromo)}</p>
     </> : 
     <>
-      <p>Price {euro.format(coffee.price)}€</p>
-      <p>Price per ten {euro.format(coffee.pricePerTen)}€</p>
+      <p>Price {euro.format(coffee.price)}</p>
+      <p>Price per ten {euro.format(coffee.pricePerTen)}</p>
     </>
     
     return(
       <div className="profile">
         <div className="profileHeader">
-          <h1 id="productProfile">Products profile</h1>
+          <h1 id="productProfile">Product profile: </h1>
           <h1 id="coffeeName">{coffee.name}</h1>
           <button onClick={() => back("")}>X</button>
         </div>
@@ -186,7 +186,7 @@ export default function Home7() {
       if (wordsInMessage.length == 0 || wordsInMessage.includes(coffee.name)){
         return(
           <div onClick={()=>setProfile(coffee.name)}  className="card">
-          <img src={coffee.picture}/>
+          <img src={coffee.picture} className="coffeePic"/>
           <div style={{padding:5, borderRadius:10}}className="card-right">
             <p>{coffee.name}{coffee.promo ? <p>En Promo</p> : <></>}</p>
 

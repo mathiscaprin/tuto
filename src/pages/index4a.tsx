@@ -23,7 +23,7 @@ function Profile({back, insertText, coffee} : {back : Dispatch<SetStateAction<st
     return(
       <div className="profile"> 
         <div className="profileHeader">
-          <h1 id="productProfile">Products profile</h1>
+          <h1 id="productProfile">Product profile: </h1>
           <h1 id="coffeeName">{coffee.name}</h1>
           <button onClick={() => back("")}>X</button>
         </div>
@@ -65,7 +65,6 @@ export default function Home4a() {
   }
   
   const listCoffee = coffees.map(coffee=>{
-    let promo = coffee.promo ? "red" : "black"
 
     return(
       <div onClick={()=>setProfile(coffee.name)} className="card">
