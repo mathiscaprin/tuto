@@ -49,8 +49,8 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
 
     const price = coffee.promo ? 
     <>
-      <p>Price <span style={{textDecoration : "line-through"}}>{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.valeurPromo)}</p>
-      <p>Price per ten <span style={{textDecoration : "line-through"}}>{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.valeurPromo)}</p>
+      <p>Price <span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.valeurPromo)}</p>
+      <p>Price per ten <span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.valeurPromo)}</p>
     </> : 
     <>
       <p>Price {euro.format(coffee.price)}</p>

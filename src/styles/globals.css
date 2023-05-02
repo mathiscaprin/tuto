@@ -1,5 +1,9 @@
 @import 'https://static.iadvize.com/conversation-panel-app-lib/2.9.0/idzcpa.base.css';
 
+.index{
+    padding: 30px;
+}
+
 .homeButtons{
     margin-top: 40px;
     display: flex;
@@ -79,6 +83,8 @@
     flex-direction: column;
     gap: 5px;
     grid-column: 2;
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .profile{
@@ -172,3 +178,6 @@
     font: var(--CPA-text-default)
 }
 
+.previousPrice{
+    text-decoration: line-through;
+}

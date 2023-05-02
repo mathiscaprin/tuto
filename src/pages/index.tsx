@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from "react"
+import { SetStateAction, useState } from "react"
 import Singleton from "./designpattern/singleton"
 import { coffees, Product } from "./api/products";
 const instance = Singleton.getInstance()
@@ -43,7 +43,7 @@ export default function Home() {
 
 
   return(
-    <div style={{padding:30}}>
+    <div className="index">
       {base? 
       <div>
         <h1>Choose version : </h1>

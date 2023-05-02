@@ -55,8 +55,8 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
     });
     const price = coffee.promo ? 
     <>
-      <p>Price <span style={{textDecoration : "line-through"}}>{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.valeurPromo)}</p>
-      <p>Price per ten <span style={{textDecoration : "line-through"}}>{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.valeurPromo)}</p>
+      <p>Price <span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.valeurPromo)}</p>
+      <p>Price per ten <span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.valeurPromo)}</p>
     </> : 
     <>
       <p>Price {euro.format(coffee.price)}</p>
@@ -185,7 +185,7 @@ export default function Home7() {
         return(
           <div onClick={()=>setProfile(coffee.name)}  className="card">
           <img src={coffee.picture} className="coffeePic"/>
-          <div style={{padding:5, borderRadius:10}}className="card-right">
+          <div className="card-right">
             <p>{coffee.name}{coffee.promo ? <p>En Promo</p> : <></>}</p>
 
           </div>
