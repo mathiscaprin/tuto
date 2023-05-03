@@ -58,7 +58,7 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
   }
 }
 
-export default function Home4b() {
+export default function Version4b() {
   const [coffees, setCoffees] = useState<Product[]>([])
   const [profile, setProfile] = useState("")
 

@@ -84,7 +84,7 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
   }
 }
 
-export default function Home7() {
+export default function Version7() {
   const [usedWords, setUsedWords] = useState<string[]>([])
   const [wordsInMessage, setWordsInMessage] = useState<string[]>([])
   const [coffees, setCoffees] = useState<Product[]>([])

@@ -1,19 +1,19 @@
 import { SetStateAction, useState } from "react"
-import Home3 from "./index3";
-import Home4a from "./index4a";
-import Home4b from "./index4b";
-import Home4c from "./index4c";
-import Home7 from "./index7"
+import Version3 from "./index3";
+import Version4a from "./index4a";
+import Version4b from "./index4b";
+import Version4c from "./index4c";
+import Version7 from "./index7"
 
 function Buttons({func} : {func : (func : SetStateAction<JSX.Element>)=>void}){
 
-    const versions = [<Home3/>,<Home4a/>,<Home4b/>,<Home4c/>,<Home7/>]
+    const versions = [<Version3/>,<Version4a/>,<Version4b/>,<Version4c/>,<Version7/>]
     const description : {[version : string] : string} = {
-      "Home3" : "basic version",
-      "Home4a" : "Add insert text",
-      "Home4b" :  "Add insert card",
-      "Home4c" : "Add card bundle",
-      "Home7" : "Add Intent and Triggers"
+      "Version3" : "basic version",
+      "Version4a" : "Add insert text",
+      "Version4b" :  "Add insert card",
+      "Version4c" : "Add card bundle",
+      "Version7" : "Add Intent and Triggers"
     }
     const buttons = versions.map((version)=>{
       return(
@@ -21,7 +21,7 @@ function Buttons({func} : {func : (func : SetStateAction<JSX.Element>)=>void}){
       )
     })
     return(
-      <div className="homeButtons">
+      <div className="HomeButtons">
         {buttons}
       </div>
       )

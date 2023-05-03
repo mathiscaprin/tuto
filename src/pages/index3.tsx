@@ -10,9 +10,10 @@ async function productAPI(){
   return coffees
 }
 
-export default function Home3() {
+export default function Version3() {
 
   const [coffees, setCoffees] = useState<Product[]>([])
+
 
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init())

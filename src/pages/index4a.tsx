@@ -41,7 +41,7 @@ function Profile({back, insertText, coffee} : {back : Dispatch<SetStateAction<st
   }
 }
 
-export default function Home4a(){
+export default function Version4a(){
 
   const [coffees, setCoffees] = useState<Product[]>([])
   const [profile, setProfile] = useState("")
