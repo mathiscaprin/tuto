@@ -49,5 +49,4 @@ export default function Home() {
       {state}
     </div>
   )
-
 }

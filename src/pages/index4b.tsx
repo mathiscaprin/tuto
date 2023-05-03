@@ -111,9 +111,9 @@ export default function Home4b() {
   })
 
   return (
-    <div className="list">
+    <div>
      {profile=="" ? 
-      <div>
+      <div className="list">
         <div className="title">Product</div>
         {listCoffee}
      </div> : <Profile back={setProfile} insertText={insertText} coffee={coffees.findLast((coffee)=>coffee.name == profile)} insertCard={insertCard}></Profile> }
