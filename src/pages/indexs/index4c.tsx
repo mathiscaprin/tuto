@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import Singleton from "./designpattern/singleton"
-import { Product } from "./api/products";
-import { api } from "./consts";
+import Singleton from "../designpattern/singleton"
+import { Product } from "../api/products"
+import { api } from "../consts"
+
 const instance = Singleton.getInstance()
 
 async function productAPI(){
@@ -158,18 +159,16 @@ export default function Version4c() {
   })
 
   return (
-    <div className="list">
+    <div>
       {profile==="" ? (
-        <div>
-          <div className="title">Product</div>
           <div className="list">
+            <div className="title">Product</div>
             {listCoffee}
+            <div className="sendBundle">
+                <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
+                <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount))}>Send discount</button>
+            </div>
           </div>
-          <div className="sendBundle">
-              <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
-              <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount))}>Send discount</button>
-          </div>
-        </div>
     ):(
       <Profile back={setProfile} insertText={insertText} coffee={coffees.findLast((coffee)=>coffee.name == profile)} insertCard={insertCard}></Profile>)}
     </div>
