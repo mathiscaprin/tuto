@@ -32,6 +32,9 @@
     max-width: 100px;
     height: 60px;
     margin-left: 10px;
+    background-color: var(--CPA-color-neutral-200);
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .greaterThan{
@@ -167,3 +170,12 @@
     text-decoration: line-through;
 }
 
+.pastille{
+    position: absolute;
+    width: 0.8rem;
+    height: 0.8rem;
+    background: red;
+    border: 1px solid white;
+    border-radius: 999px;
+    box-sizing: content-box;
+}

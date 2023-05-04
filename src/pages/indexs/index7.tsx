@@ -88,7 +88,6 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
 
 export default function Version7() {
   const [usedWords, setUsedWords] = useState<string[]>([])
-  const [wordsInMessage, setWordsInMessage] = useState<string[]>([])
   const [coffees, setCoffees] = useState<Product[]>([])
   const [profile, setProfile] = useState("")
 
@@ -172,43 +171,29 @@ export default function Version7() {
   }
 
   function handleTrigger(strings : string[]){
-    setWordsInMessage(strings)
+    setProfile(strings[0])
   }
 
   const listCoffee = coffees.map(coffee=>{
-      if (wordsInMessage.length == 0 || wordsInMessage.includes(coffee.name)){
         return(
           <div onClick={()=>setProfile(coffee.name)}  className="card" key={coffee.name}>
-          <img src={coffee.picture} className="coffeePic"/>
+          <div>
+            <img src={coffee.picture} className="coffeePic"/>
+            {usedWords.includes(coffee.name) ?  <div className="pastille"></div> : <></>}
+          </div>
           <div className="card-right">
             <p>{coffee.name}</p>{coffee.discount ? <p>On discount</p> : <></>}
           </div>
           <img className="greaterThan" src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg"/>
         </div>)
-      }else{
-        return(
-          <></>
-        )
       }
-  })
-
-  const listUsed = coffees.map(coffee=>{
-    return(
-      usedWords.includes(coffee.name) ? <p onClick={()=>setProfile(coffee.name)} >{coffee.name}</p> : <></>
-    )
-  })
+  )
 
   return (
     <div>
-      {wordsInMessage.length == 0 || profile !== "" ? <></> : <button className="mainButton" onClick={()=>setWordsInMessage([])}>Return</button>}
       {profile === "" ? (
                 <div>
                   <div className="title">Product</div>
-                  {usedWords.length == 0 ? <></> : 
-                  <div className="listUsed">
-                    <p>Suggestions :</p> 
-                    {listUsed}
-                  </div>}
                   <div className="list">
                     {listCoffee}
                   </div>
