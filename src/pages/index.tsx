@@ -1,4 +1,4 @@
-import Example from "./indexs/index4a";
+import Example from "./indexs/index3";
 
 export default function Home() {
 

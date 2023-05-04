@@ -106,10 +106,6 @@
     gap:10px
 }
 
-.top-right div{
-    display: flex;
-    flex-direction: row;
-}
 
 .top-right p{
     margin: 0;
@@ -119,7 +115,6 @@
     font : var(--CPA-text-default);
     display: flex;
     flex-direction: column;
-    
 }
 
 .profileMiddle p{
@@ -161,6 +156,11 @@
 
 .listUsed{
     font: var(--CPA-text-default)
+}
+
+.price{
+    display: flex;
+    flex-direction: column;
 }
 
 .previousPrice{

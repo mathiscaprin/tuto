@@ -29,8 +29,10 @@ function Profile({back, coffee} : {back : Dispatch<SetStateAction<string>>, coff
           <img src={coffee.picture}/>
           <div className="top-right">
             <p>{coffee.description}</p>
-            <p>{coffee.price}€</p>
-            <p>Per ten {coffee.pricePerTen}€</p>
+            <div className="price">
+              <p>{coffee.price}€</p>
+              <p>{coffee.pricePerTen}€ 10 pieces</p>
+            </div>
           </div>
         </div>
       </div>

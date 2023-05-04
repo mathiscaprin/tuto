@@ -57,11 +57,11 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
       <p><span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.discountAmount)}</p>
       <p>Per ten <span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.discountAmount)}</p>
     </> : 
-    <>
+    <> 
       <p>{euro.format(coffee.price)}</p>
       <p>Per ten {euro.format(coffee.pricePerTen)}</p>
     </>
-    
+
     return(
       <div className="profile">
         <div className="profileHeader">
@@ -72,7 +72,9 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
           <img src={coffee.picture}/>
           <div className="top-right">
             <p>{coffee.description}</p>
-            {price}
+            <div className="price">
+              {price}
+            </div>
             <div>
               <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
               <button className="mainButton" onClick={()=>insertCard(coffee)}>Send card</button>

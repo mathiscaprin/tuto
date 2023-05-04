@@ -46,8 +46,10 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
           <img src={coffee.picture}/>
           <div className="top-right">
             <p>{coffee.description}</p>
-            <p>{coffee.price}€</p>
-            <p>Per ten {coffee.pricePerTen}€</p>
+            <div className="price">
+              <p>{coffee.price}€</p>
+              <p>{coffee.pricePerTen}€ 10 pieces</p>
+            </div>
             <div>
               <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
               <button className="mainButton" onClick={()=>insertCard(coffee)}>Send card</button>
