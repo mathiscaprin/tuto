@@ -108,6 +108,7 @@ export default function Version7() {
     }
   })
 
+
   function insertText(text : string){
     console.log(instance.getVariable())
     instance.getVariable().then((client : any)=>{
@@ -182,9 +183,9 @@ export default function Version7() {
   const listCoffee = coffees.map(coffee=>{
         return(
           <div onClick={()=>setProfile(coffee.name)}  className="card" key={coffee.name}>
-          <div>
+          <div className="img-container">
             <img src={coffee.picture} className="coffeePic"/>
-            {usedWords.includes(coffee.name) ?  <div className="pastille"></div> : <></>}
+            {usedWords.includes(coffee.name) ?  <div className="redot"></div> : <></>}
           </div>
           <div className="card-right">
             <p>{coffee.name}</p>
@@ -194,8 +195,6 @@ export default function Version7() {
         </div>)
       }
   )
-
-  
 
   return (
     <div>

@@ -124,7 +124,6 @@
     margin: 0;
 }
 
-
 .mainButton{
     width: fit-content;
     background-color: var(--CPA-color-action);
@@ -138,7 +137,7 @@
 
 .mainButton:hover{
     box-shadow: var(--CPA-shadow-default);
-    transition: 50ms;
+    color: var(--CPA-color-neutral-300)
 }
 
 .title{
@@ -169,7 +168,16 @@
     text-decoration: line-through;
 }
 
-.pastille{
+.img-container{
+    position: relative;
+	display: inline-block;
+    margin-top: 10px;
+}
+
+.redot{
+
+    top : 0;
+    right : 0;
     position: absolute;
     width: 0.8rem;
     height: 0.8rem;
@@ -177,4 +185,5 @@
     border: 1px solid white;
     border-radius: 999px;
     box-sizing: content-box;
+
 }

@@ -24,6 +24,7 @@ function runMiddleware(
 
 
 export type Product = {
+    id : number,
     name : string,
     description : string,
     price : number,
@@ -36,6 +37,7 @@ export type Product = {
 
 export const coffees : Product[] = [
     {
+        id : 1,
         name : "Vaniglia",
         description : "The coffee blend's mellow, malted cereal notes bring a rounded, silky taste that elegantly complements classic vanilla.",
         price : 0.49,
@@ -45,6 +47,7 @@ export const coffees : Product[] = [
         discount : false,
         discountAmount : 1
     },{
+        id : 2,
         name : "Capriccio",
         description : "Let the combination of light acidity and a savory cereal note surprise you in this refreshing but deep light-roasted Arabica-Robusta espresso blend.",
         price : 0.43,
@@ -54,6 +57,7 @@ export const coffees : Product[] = [
         discount : false,
         discountAmount : 1
     },{
+        id : 3,
         name : "Napoli",
         description : "Taste our tribute to the Italian coffee capital. A dark roasted Robusta-leavened blend delivers a thick, creamy cup and pleasantly bitter aftertaste.",
         price : 0.46,
@@ -63,6 +67,7 @@ export const coffees : Product[] = [
         discount : true, 
         discountAmount : 0.7
     },{
+        id : 4,
         name : "Jamaica Blue Mountain",
         description : "A coffee so treasured they ship it in specially crafted wood barrels SPECIAL RESERVE JAMAICA BLUE MOUNTAIN is rich in exotic woody and spice notes.",
         price : 1.50,
@@ -72,6 +77,7 @@ export const coffees : Product[] = [
         discount : false,
         discountAmount : 1
     },{
+        id : 5, 
         name : "Caramello",
         description : "The taste of sweet comfort that comes from blending in a biscuity caramel flavour into our silky-textured South American Arabicas.",
         price : 0.49,
