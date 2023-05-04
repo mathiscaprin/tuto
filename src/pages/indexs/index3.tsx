@@ -22,7 +22,7 @@ function Profile({back, coffee} : {back : Dispatch<SetStateAction<string>>, coff
     return(
       <div className="profile"> 
         <div className="profileHeader">
-          <img src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg" onClick={() => back("")}/>
+          <p onClick={() => back("")}>Back</p>
           <h2 id="coffeeName">{coffee.name}</h2>
         </div>
         <div className="profileTop">
@@ -70,7 +70,7 @@ export default function Example() {
     <div>
     {profile=="" ? (    
       <div className="list">        
-      <div className="title">Product</div>
+      <div className="title">Products</div>
       {listCoffee}
     </div>
       ) : (

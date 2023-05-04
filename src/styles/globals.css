@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: space-around;
     width: 100%;
+    border-radius: 8px;
 }
 
 .card:hover{
@@ -19,6 +20,8 @@
 .card p{
     font : var(--CPA-text-default);
     margin : 0;
+    color : var(--CPA-color-neutral-900)
+
 }
 
 .card button{
@@ -52,6 +55,12 @@
     margin-left: 20px;
 }
 
+.sendBundle{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
 .profile{
     display: flex;
     flex-direction: column;
@@ -66,26 +75,27 @@
 .profileHeader{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2,40px);
     justify-content: flex-start;
     margin-bottom: 20px;
 }
 
-.profileHeader img{
-    background-color: white;
-    border: none;
+.profileHeader p{
     grid-column: 1;
     text-align: start;
-    transform: scaleX(-1);
-    height: 30px;
-    width: auto;
+    text-align: start;
+    font: var(--CPA-text-default);
+    margin-left: 20px;
+    color: var(--CPA-color-text-action)
+}
+
+.profileHeader p:hover{
+    text-decoration: underline;
 }
 
 .profileHeader #coffeeName{
     grid-column: 2;
-    grid-row: 2;
     text-align: center;
-    font: var(--CPA-text-default)
+    font: var(--CPA-text-large)
 }
 
 .profileTop{
@@ -93,13 +103,16 @@
     flex-direction: row;
     text-align: start;
     justify-content: space-around;
-    align-items: center;
     font : var(--CPA-text-default);
 }
 
 .profileTop img{
     max-width: 100px;
-    height: 70px;
+    height: 80px;
+    margin-top: 10px;
+    background-color: var(--CPA-color-neutral-200);
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .top-right{
@@ -109,9 +122,9 @@
     gap:10px
 }
 
-
 .top-right p{
     margin: 0;
+    color:var(--CPA-color-neutral-800)
 }
 
 .profileMiddle{
@@ -133,6 +146,8 @@
     text-align: left;
     color: white;
     box-shadow: var(--CPA-shadow-small);
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .mainButton:hover{
@@ -143,7 +158,7 @@
 .title{
     text-align: center;
     margin-bottom: 20px;
-    font:var(--CPA-text-large)
+    font:var(--CPA-text-large-bold)
 }
 
 .list{
@@ -164,6 +179,11 @@
     flex-direction: column;
 }
 
+.price p{
+    font: var(--CPA-text-small);
+    color : var(--CPA-color-neutral-700)
+}
+
 .previousPrice{
     text-decoration: line-through;
 }
@@ -174,16 +194,14 @@
     margin-top: 10px;
 }
 
-.redot{
-
-    top : 0;
-    right : 0;
+.dot{
+    top : -4px;
+    right : -4px;
     position: absolute;
     width: 0.8rem;
     height: 0.8rem;
-    background: red;
+    background: #8260ff;
     border: 1px solid white;
     border-radius: 999px;
     box-sizing: content-box;
-
 }

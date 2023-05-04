@@ -70,7 +70,7 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
     return(
       <div className="profile">
         <div className="profileHeader">
-          <img src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg" onClick={() => back("")}/>
+          <p onClick={() => back("")}>Back</p>
           <h2 id="coffeeName">{coffee.name}</h2>
         </div>
         <div className="profileTop">
@@ -80,7 +80,7 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
             <div className="price">
               <Price coffee={coffee} perTen={true}/>
             </div>
-            <div>
+            <div className="sendBundle">
               <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
               <button className="mainButton" onClick={()=>insertCard(coffee)}>Send card</button>
             </div>
@@ -185,11 +185,13 @@ export default function Version7() {
           <div onClick={()=>setProfile(coffee.name)}  className="card" key={coffee.name}>
           <div className="img-container">
             <img src={coffee.picture} className="coffeePic"/>
-            {usedWords.includes(coffee.name) ?  <div className="redot"></div> : <></>}
+            {usedWords.includes(coffee.name) ?  <div className="dot"></div> : <></>}
           </div>
           <div className="card-right">
             <p>{coffee.name}</p>
-            <Price coffee={coffee} perTen={false}/>
+            <div className="price">
+              <Price coffee={coffee} perTen={false}/>
+            </div>
           </div>
           <img className="greaterThan" src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg"/>
         </div>)
@@ -201,7 +203,7 @@ export default function Version7() {
       {profile === "" ? (
                 <div>
                   <div className="list">
-                    <div className="title">Product</div>
+                    <div className="title">Products</div>
                     {listCoffee}
                     <div className="sendBundle">
                         <button className="mainButton" onClick={() => insertBundle()}>Send all</button>

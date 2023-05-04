@@ -35,6 +35,8 @@ export type Product = {
     discountAmount : number
 }
 
+
+
 export const coffees : Product[] = [
     {
         id : 1,
