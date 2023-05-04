@@ -1,9 +1,3 @@
-import Vaniglia from './pictures/Vaniglia.webp'
-import Capriccio from './pictures/Capriccio.webp'
-import Napoli from './pictures/Napoli.webp'
-import Galapagos from './pictures/Galapagos.webp'
-import Etoudiante from './pictures/Etoudiante.jpg'
-import { StaticImageData } from 'next/image'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Cors from 'cors'
 

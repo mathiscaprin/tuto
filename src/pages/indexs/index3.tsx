@@ -22,8 +22,8 @@ function Profile({back, coffee} : {back : Dispatch<SetStateAction<string>>, coff
     return(
       <div className="profile"> 
         <div className="profileHeader">
+          <img src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg" onClick={() => back("")}/>
           <h2 id="coffeeName">{coffee.name}</h2>
-          <button onClick={() => back("")}>X</button>
         </div>
         <div className="profileTop">
           <img src={coffee.picture}/>
@@ -38,11 +38,10 @@ function Profile({back, coffee} : {back : Dispatch<SetStateAction<string>>, coff
   }
 }
 
-export default function Version3() {
+export default function Example() {
 
   const [coffees, setCoffees] = useState<Product[]>([])
   const [profile, setProfile] = useState("")
-
 
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init())
