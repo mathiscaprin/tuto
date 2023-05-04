@@ -38,6 +38,23 @@ type Intent = {
   }
 }
 
+function Price( {coffee,perTen} : {coffee : Product, perTen : boolean}){
+  let euro = Intl.NumberFormat('en-DE', {
+    style: 'currency',
+    currency: 'EUR',
+  });
+  return( coffee.discount ? 
+  <>
+    <p><span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.discountAmount)}</p>
+    {perTen ? <p><span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.discountAmount)} 10 pieces</p> : <></>}
+  </> : 
+  <> 
+    <p>{euro.format(coffee.price)}</p>
+    {perTen ? <p>{euro.format(coffee.pricePerTen)} 10 pieces</p> : <></>}
+  </>
+  )
+}
+
 function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetStateAction<string>>, insertText : (str : string)=>void, insertCard : (coffee : Product)=>void, coffee : Product | undefined}){
   if (typeof coffee == "undefined"){
     return(
@@ -48,19 +65,7 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
     )
   }else{
 
-    let euro = Intl.NumberFormat('en-DE', {
-      style: 'currency',
-      currency: 'EUR',
-    });
-    const price = coffee.discount ? 
-    <>
-      <p><span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.discountAmount)}</p>
-      <p>Per ten <span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.discountAmount)}</p>
-    </> : 
-    <> 
-      <p>{euro.format(coffee.price)}</p>
-      <p>Per ten {euro.format(coffee.pricePerTen)}</p>
-    </>
+    
 
     return(
       <div className="profile">
@@ -73,7 +78,7 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
           <div className="top-right">
             <p>{coffee.description}</p>
             <div className="price">
-              {price}
+              <Price coffee={coffee} perTen={true}/>
             </div>
             <div>
               <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
@@ -182,24 +187,27 @@ export default function Version7() {
             {usedWords.includes(coffee.name) ?  <div className="pastille"></div> : <></>}
           </div>
           <div className="card-right">
-            <p>{coffee.name}</p>{coffee.discount ? <p>On discount</p> : <></>}
+            <p>{coffee.name}</p>
+            <Price coffee={coffee} perTen={false}/>
           </div>
           <img className="greaterThan" src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg"/>
         </div>)
       }
   )
 
+  
+
   return (
     <div>
       {profile === "" ? (
                 <div>
-                  <div className="title">Product</div>
                   <div className="list">
+                    <div className="title">Product</div>
                     {listCoffee}
-                  </div>
-                  <div className="sendBundle">
-                      <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
-                      <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount))}>Send discount</button>
+                    <div className="sendBundle">
+                        <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
+                        <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount))}>Send discount</button>
+                    </div>
                   </div>
               </div>
       ):(
