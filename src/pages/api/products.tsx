@@ -35,7 +35,15 @@ export type Product = {
     discountAmount : number
 }
 
-
+export type PartialProduct = {
+  id : number,
+  name : string,
+  price : number,
+  pricePerTen : number,
+  picture : string,
+  discount : boolean,
+  discountAmount : number,
+}
 
 export const coffees : Product[] = [
     {
@@ -92,5 +100,13 @@ export const coffees : Product[] = [
 ]
 
 export default async function handler(req : NextApiRequest,res : NextApiResponse){
-    res.status(200).json(coffees)
+    res.status(200).json(coffees.map((coffee) => ({
+      id: coffee.id,
+      name: coffee.name,
+      price: coffee.price,
+      pricePerTen : coffee.pricePerTen,
+      picture: coffee.picture,
+      discount: coffee.discount,
+      discountAmount: coffee.discountAmount,
+    })))
 }

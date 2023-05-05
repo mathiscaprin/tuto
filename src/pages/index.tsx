@@ -31,18 +31,17 @@ export default function Home() {
 
   }
 
-   useEffect(()=>{
-     instance.setVariable((window as any).idzCpa.init({
-       onIntent : handleIntent,
-       onTrigger : handleTrigger,
-     }))
-     if (coffees.length == 0){
-       productAPI().then((res : any)=> {
-         setCoffees(res)
-     })
-     }
-   })
-
+  //  useEffect(()=>{
+  //    instance.setVariable((window as any).idzCpa.init({
+  //      onIntent : handleIntent,
+  //      onTrigger : handleTrigger,
+  //    }))
+  //    if (coffees.length == 0){
+  //      productAPI().then((res : any)=> {
+  //        setCoffees(res)
+  //    })
+  //    }
+  //  })
   return(
     <Example />
   )

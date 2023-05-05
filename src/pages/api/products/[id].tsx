@@ -27,7 +27,6 @@ export default async function handler(req : NextApiRequest,res : NextApiResponse
     console.log(req.query)
     const { query } = req
     const { id } = query
-    const filtered = coffees.filter(coffee=>(coffee.id.toString() === id))
-
+    const filtered = coffees.find(coffee=>(coffee.id.toString() === id))
     res.status(200).json(filtered)
 }

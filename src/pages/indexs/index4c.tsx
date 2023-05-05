@@ -11,6 +11,13 @@ async function productAPI(){
   return coffees
 }
 
+async function getProduct(id : number) : Promise<Product>{
+  const res = await fetch(api+ `/${id}`)
+  const coffee = await res.json()
+  console.log(coffee)
+  return coffee
+}
+
 type Action = {
   type: "LINK";
   title: string;
@@ -31,6 +38,8 @@ type Carousel = {
   title?:string;
   cards: Card[]
 }
+
+
 
 function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetStateAction<string>>, insertText : (str : string)=>void, insertCard : (coffee : Product)=>void, coffee : Product | undefined}){
   if (typeof coffee == "undefined"){
