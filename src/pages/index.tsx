@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Singleton from "./designpattern/singleton";
 import { Product } from "./api/products";
 import { api } from "./consts";
-import Example from "./indexs/index4c";
+import Example from "./indexs/index3";
 
 
 const instance = Singleton.getInstance()

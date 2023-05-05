@@ -96,7 +96,7 @@ export default function Example() {
     link : "",
     discount : false,
     discountAmount : 1
-})
+  })
 
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init())
