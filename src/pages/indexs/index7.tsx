@@ -46,7 +46,7 @@ type Intent = {
 }
 
 function Price({coffee,perTen} : {coffee : PartialProduct, perTen : boolean}){
-  
+
   let euro = Intl.NumberFormat('en-DE', {
     style: 'currency',
     currency: 'EUR',
@@ -122,7 +122,7 @@ export default function Version7() {
     getProduct(id).then(
       coffee=>{
         setProfileCoffee(coffee)
-        console.log("oui"+coffee.id)
+        console.log("launch "+coffee.id)
         setProfile(id)
       }
     )

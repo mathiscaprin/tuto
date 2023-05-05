@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import Singleton from "../designpattern/singleton"
-import { Product } from "../api/products"
+import { Product,PartialProduct } from "../api/products"
 import { api } from "../consts"
 
 const instance = Singleton.getInstance()
@@ -39,34 +39,30 @@ type Carousel = {
   cards: Card[]
 }
 
+function Price({coffee,perTen} : {coffee : PartialProduct, perTen : boolean}){
+  
+  let euro = Intl.NumberFormat('en-DE', {
+    style: 'currency',
+    currency: 'EUR',
+  });
+  return( coffee.discount ? 
+  <>
+    <p><span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.discountAmount)}</p>
+    {perTen ? <p><span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.discountAmount)} 10 pieces</p> : <></>}
+  </> : 
+  <> 
+    <p>{euro.format(coffee.price)}</p>
+    {perTen ? <p>{euro.format(coffee.pricePerTen)} 10 pieces</p> : <></>}
+  </>
+  )
+}
 
+function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetStateAction<number>>, insertText : (str : string)=>void, insertCard : (id : number)=>void, coffee : Product}){
 
-function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetStateAction<string>>, insertText : (str : string)=>void, insertCard : (coffee : Product)=>void, coffee : Product | undefined}){
-  if (typeof coffee == "undefined"){
-    return(
-      <div>
-        <p>Error</p>
-        <button onClick={() => back("")}>Return</button>
-      </div>
-    )
-  }else{
-    let euro = Intl.NumberFormat('en-DE', {
-      style: 'currency',
-      currency: 'EUR',
-    });
-    const price = coffee.discount ? 
-    <>
-      <p><span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.discountAmount)}</p>
-      <p>Per ten <span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.discountAmount)}</p>
-    </> : 
-    <>
-      <p>{euro.format(coffee.price)}</p>
-      <p>Per ten {euro.format(coffee.pricePerTen)}</p>
-    </>
     return(
       <div className="profile">
         <div className="profileHeader">
-          <p onClick={() => back("")}>Back</p>
+          <p onClick={() => back(-1)}>Back</p>
           <h2 id="coffeeName">{coffee.name}</h2>
         </div>
         <div className="profileTop">
@@ -74,23 +70,34 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
           <div className="top-right">
             <p>{coffee.description}</p>
             <div className="price">
-              {price}
+              <Price coffee={{id: coffee.id,name: coffee.name,price: coffee.price,pricePerTen : coffee.pricePerTen,picture: coffee.picture,discount: coffee.discount,discountAmount: coffee.discountAmount}} perTen={true}/>
             </div>
-            <div>
+            <div className="sendBundle">
               <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
-              <button className="mainButton" onClick={()=>insertCard(coffee)}>Send card</button>
+              <button className="mainButton" onClick={()=>insertCard(coffee.id)}>Send card</button>
             </div>
           </div>
         </div>
       </div>
     )
-  }
 }
 
-export default function Version4c() {
+export default function Example() {
 
   const [coffees, setCoffees] = useState<Product[]>([])
-  const [profile, setProfile] = useState("")
+  const [profile, setProfile] = useState(-1)
+  const [profileCoffee, setProfileCoffee] = useState({
+    id : -1,
+    name : "",
+    description : "",
+    price : 0,
+    pricePerTen : 0,
+    picture : "",
+    link : "",
+    discount : false,
+    discountAmount : 1
+})
+
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init())
     if (coffees.length == 0){
@@ -100,6 +107,16 @@ export default function Version4c() {
     }
   })
 
+  function launchProduct(id : number){
+    getProduct(id).then(
+      coffee=>{
+        setProfileCoffee(coffee)
+        console.log("launch "+coffee.id)
+        setProfile(id)
+      }
+    )
+  }
+
   function insertText(text : string){
     console.log(instance.getVariable())
     instance.getVariable().then((client : any)=>{
@@ -107,37 +124,11 @@ export default function Version4c() {
     })
   }
 
-  function insertCard(coffee : Product){
-    const card : Card = {
-      title : coffee.name,
-      text : coffee.description,    
-      actions : [
-        {
-          type : "LINK",
-          title : coffee.name,
-          url : coffee.link
-        }
-      ],
-      image : {
-        url : coffee.picture,
-        description : coffee.name 
-      }
-    }
-    instance.getVariable().then((client : any)=>{
-      client.pushCardInConversationThread(card)
-    })
-  }
-
-  function insertBundle(listProduct : Product[] = coffees){
-    const carousel : Carousel = {
-      title: "Coffee",
-      cards : []
-    }
-
-    listProduct.forEach((coffee)=>{
-      let card : Card = {
+  function insertCard(id : number){
+    getProduct(id).then((coffee)=>{
+      const card : Card = {
         title : coffee.name,
-        text : coffee.description, 
+        text : coffee.description,
         actions : [
           {
             type : "LINK",
@@ -150,19 +141,55 @@ export default function Version4c() {
           description : coffee.name 
         }
       }
-      carousel.cards.push(card)
+      instance.getVariable().then((client : any)=>{
+        client.pushCardInConversationThread(card)
+      })
     })
+  }
+
+  function insertBundle(listIDProduct : number[] = coffees.map(coffee=>coffee.id)){
+    const carousel : Carousel = {
+      title: "Coffee",
+      cards : []
+    }
+    const promises = listIDProduct.map((id)=>{
+      return(getProduct(id))
+    })
+
+    Promise.all(promises).then(coffee=>{coffee.forEach((coffee=>{
+      let card : Card = {
+        title : coffee.name,
+        text : coffee.description,
+        actions : [
+          {
+            type : "LINK",
+            title : coffee.name,
+            url : coffee.link
+          }
+        ],
+        image : {
+          url : coffee.picture,
+          description : coffee.name 
+        }
+      }
+
+      carousel.cards.push(card)
+    }))
     instance.getVariable().then((client : any)=>{
       client.pushCardBundleInConversationThread(carousel)
+    })
     })
   }
 
   const listCoffee = coffees.map(coffee=>{
     return(
-      <div onClick={()=>{setProfile(coffee.name)}}  className="card" key={coffee.name}>
+      <div onClick={()=>launchProduct(coffee.id)}  className="card" key={coffee.name}>
         <img src={coffee.picture}  className="coffeePic"/>
         <div className="card-right">
-          <p>{coffee.name}</p>{coffee.discount ? <p>On discount</p> : <></>}
+          <p>{coffee.name}</p>
+          <div className="price">
+              <Price coffee={coffee} perTen={false}/>
+            </div>
         </div>
         <img className="greaterThan" src="https://t4.ftcdn.net/jpg/03/76/69/25/360_F_376692508_XUzZzz0x3W34II8NlIOfqZQ2Lc26kh58.jpg"/>
       </div>
@@ -171,17 +198,20 @@ export default function Version4c() {
 
   return (
     <div>
-      {profile==="" ? (
-          <div className="list">
-            <div className="title">Products</div>
-            {listCoffee}
-            <div className="sendBundle">
-                <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
-                <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount))}>Send discount</button>
+      {profile === -1 ? (
+                <div>
+                <div className="list">
+                  <div className="title">Products</div>
+                  {listCoffee}
+                  <div className="sendBundle">
+                      <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
+                      <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount).map(coffee=>coffee.id))}>Send discount</button>
+                  </div>
+                </div>
             </div>
-          </div>
     ):(
-      <Profile back={setProfile} insertText={insertText} coffee={coffees.findLast((coffee)=>coffee.name == profile)} insertCard={insertCard}></Profile>)}
+        <Profile back={setProfile} insertText={insertText} coffee={profileCoffee} insertCard={insertCard}/>
+        )} 
     </div>
   )
 }
