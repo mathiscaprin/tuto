@@ -47,11 +47,11 @@ function Price({coffee,perTen} : {coffee : PartialProduct, perTen : boolean}){
   return( coffee.discount ? 
   <>
     <p><span className="previousPrice">{euro.format(coffee.price)}</span> {euro.format(coffee.price * coffee.discountAmount)}</p>
-    {perTen ? <p><span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.discountAmount)} 10 pieces</p> : <></>}
+    {perTen ? <p><span className="previousPrice">{euro.format(coffee.pricePerTen)}</span> {euro.format(coffee.pricePerTen * coffee.discountAmount)} - 10 pieces</p> : <></>}
   </> : 
   <> 
     <p>{euro.format(coffee.price)}</p>
-    {perTen ? <p>{euro.format(coffee.pricePerTen)} 10 pieces</p> : <></>}
+    {perTen ? <p>{euro.format(coffee.pricePerTen)} - 10 pieces</p> : <></>}
   </>
   )
 }
@@ -61,7 +61,7 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
     return(
       <div className="profile">
         <div className="profileHeader">
-          <p onClick={() => back(-1)}>Back</p>
+          <button onClick={() => back(-1)}>Back</button>
           <h2 id="coffeeName">{coffee.name}</h2>
         </div>
         <div className="profileTop">
@@ -202,7 +202,7 @@ export default function Example() {
                   {listCoffee}
                   <div className="sendBundle">
                       <button className="mainButton" onClick={() => insertBundle()}>Send all</button>
-                      <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount).map(coffee=>coffee.id))}>Send discount</button>
+                      <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount).map(coffee=>coffee.id))}>Send discounted</button>
                   </div>
                 </div>
             </div>
