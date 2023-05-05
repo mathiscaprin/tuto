@@ -13,7 +13,6 @@ async function productAPI(){
 async function getProduct(id : number) : Promise<Product>{
   const res = await fetch(api+ `/${id}`)
   const coffee = await res.json()
-  console.log(coffee)
   return coffee
 }
 
@@ -122,14 +121,12 @@ export default function Version7() {
     getProduct(id).then(
       coffee=>{
         setProfileCoffee(coffee)
-        console.log("launch "+coffee.id)
         setProfile(id)
       }
     )
   }
 
   function insertText(text : string){
-    console.log(instance.getVariable())
     instance.getVariable().then((client : any)=>{
       client.insertTextInComposeBox(text)
     })

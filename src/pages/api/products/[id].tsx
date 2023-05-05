@@ -24,7 +24,6 @@ function runMiddleware(
   }
 
 export default async function handler(req : NextApiRequest,res : NextApiResponse){
-    console.log(req.query)
     const { query } = req
     const { id } = query
     const filtered = coffees.find(coffee=>(coffee.id.toString() === id))
