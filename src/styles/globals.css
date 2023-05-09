@@ -144,6 +144,9 @@
     margin: 0;
 }
 
+
+
+
 .mainButton{
     width: fit-content;
     background-color: var(--CPA-color-action);
@@ -161,6 +164,10 @@
     box-shadow: var(--CPA-shadow-default);
     color: var(--CPA-color-neutral-300);
     cursor : pointer
+}
+
+.purpleButton{
+    background-color: #8260ff;
 }
 
 .title{

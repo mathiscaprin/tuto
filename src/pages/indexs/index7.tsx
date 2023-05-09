@@ -234,7 +234,7 @@ export default function Version7() {
                     <div className="title">Products</div>
                     {listCoffee}
                     <div className="sendBundle">
-                        <button className="mainButton" onClick={() => insertBundle(coffees.filter((coffee => usedWords.includes(coffee.name))).map(coffee=>coffee.id))}>Send intented</button>
+                        <button className="mainButton purpleButton" onClick={() => insertBundle(coffees.filter((coffee => usedWords.includes(coffee.name))).map(coffee=>coffee.id))}>Send suggestions</button>
                         <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount).map(coffee=>coffee.id))}>Send discounted</button>
                     </div>
                   </div>
