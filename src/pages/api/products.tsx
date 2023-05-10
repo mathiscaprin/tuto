@@ -118,17 +118,15 @@ export default async function handler(req : NextApiRequest,res : NextApiResponse
   }
   const verified = verifyJwt(token,secret)
   if (typeof verified == "object" && verified !== null){
-    if (verified.role == "ADMIN"){
-      res.status(200).json(coffees.map((coffee) => ({
-        id: coffee.id,
-        name: coffee.name,
-        price: coffee.price,
-        pricePerTen : coffee.pricePerTen,
-        picture: coffee.picture,
-        discount: coffee.discount,
-        discountAmount: coffee.discountAmount,
-      })))
-    }
+    res.status(200).json(coffees.map((coffee) => ({
+      id: coffee.id,
+      name: coffee.name,
+      price: coffee.price,
+      pricePerTen : coffee.pricePerTen,
+      picture: coffee.picture,
+      discount: coffee.discount,
+      discountAmount: coffee.discountAmount,
+    })))
   }else{
     res.status(401).json([])
   }
