@@ -225,3 +225,15 @@
     border-radius: 999px;
     box-sizing: content-box;
 }
+
+.waiting{
+    height: 50px;
+    width: 50px;
+    margin: auto;
+}
+
+.rejectMessage{
+    font: var(--CPA-text-default);
+    color: var(--CPA-color-text-negative);
+    text-align: center;
+}

@@ -100,7 +100,8 @@ export const coffees : Product[] = [
 ]
 
 export default async function handler(req : NextApiRequest,res : NextApiResponse){
-    res.status(200).json(coffees.map((coffee) => ({
+  console.log(req.headers.authorization)  
+  res.status(200).json(coffees.map((coffee) => ({
       id: coffee.id,
       name: coffee.name,
       price: coffee.price,

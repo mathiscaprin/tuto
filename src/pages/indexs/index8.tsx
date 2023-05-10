@@ -1,7 +1,9 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import Singleton from "../designpattern/singleton"
 import { Product,PartialProduct } from "../api/products";
-import { api } from "../consts";
+import { api, secret } from "../consts";
+import jwt from 'jsonwebtoken';
+
 const instance = Singleton.getInstance()
 
 async function productAPI(){
@@ -89,10 +91,12 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
   
 }
 
-export default function Version7() {
+export default function Version8() {
+
   const [usedWords, setUsedWords] = useState<string[]>([])
   const [coffees, setCoffees] = useState<PartialProduct[]>([])
   const [profile, setProfile] = useState(-1)
+  const [role, setRole] = useState("undefined")
   const [profileCoffee, setProfileCoffee] = useState({
     id : -1,
     name : "",
@@ -105,17 +109,44 @@ export default function Version7() {
     discountAmount : 1
 })
 
+    
+
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init({
       onIntent : handleIntent,
       onTrigger : handleTrigger
     }))
-    if (coffees.length == 0){
+    if (role == "undefined"){
+        instance.getVariable().then(
+            (client : any)=>{
+                client.getJWT().then(
+                    (token : string)=>{
+                    try {
+                        const verifiedToken = jwt.verify(
+                            token,
+                            secret,
+                            { algorithms: ['HS256'] })
+                            console.log(verifiedToken)  
+                            if (typeof verifiedToken === 'object' && verifiedToken !== null) {                    
+                                setRole(verifiedToken.role)
+                            }
+                    }catch(err){
+                        setRole("rejected")
+                        console.log(err)
+                    }
+                    }
+                )
+            }
+        )
+    }
+    
+    if (coffees.length == 0 && role == "ADMIN"){
       productAPI().then((res : any)=> {
         setCoffees(res)
     })
     }
   })
+
 
   function launchProduct(id : number){
     getProduct(id).then(
@@ -226,17 +257,29 @@ export default function Version7() {
       }
   )
 
+  function renderSwitch(role : string){
+    switch(role){
+      case "ADMIN":
+        return <>{listCoffee}
+          <div className="sendBundle">
+            <button className="mainButton purpleButton" onClick={() => insertBundle(coffees.filter((coffee => usedWords.includes(coffee.name))).map(coffee=>coffee.id))}>Send suggestions</button>
+            <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount).map(coffee=>coffee.id))}>Send discounted</button>
+          </div></>   
+       ;
+      case "undefined":
+        return <img className="waiting" src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif"/>;
+      case "rejected":
+        return <p className="rejectMessage">You do not have the permission to see the products</p>
+    }
+  }
+
   return (
     <div>
       {profile === -1 ? (
                 <div>
                   <div className="list">
                     <div className="title">Products</div>
-                    {listCoffee}
-                    <div className="sendBundle">
-                        <button className="mainButton purpleButton" onClick={() => insertBundle(coffees.filter((coffee => usedWords.includes(coffee.name))).map(coffee=>coffee.id))}>Send suggestions</button>
-                        <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount).map(coffee=>coffee.id))}>Send discounted</button>
-                    </div>
+                    {renderSwitch(role)}
                   </div>
               </div>
       ):(
