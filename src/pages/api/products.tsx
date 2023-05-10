@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Cors from 'cors'
+import jwt from 'jsonwebtoken'
+import { secret } from '../consts'
 
 const cors = Cors({
     methods: ['POST', 'GET', 'HEAD'],
@@ -15,11 +17,20 @@ function runMiddleware(
         if (result instanceof Error) {
           return reject(result)
         }
-  
         return resolve(result)
       })
     })
   }
+
+  const verifyJwt = (token : string, secret : string) => {
+    try {
+      const decoded = jwt.verify(token, secret);
+      return decoded;
+    } catch (error : any) {
+      console.error('JWT verification failed:', error.message);
+      return null;
+    }
+  };
 
 
 
@@ -100,14 +111,27 @@ export const coffees : Product[] = [
 ]
 
 export default async function handler(req : NextApiRequest,res : NextApiResponse){
-  console.log(req.headers.authorization)  
-  res.status(200).json(coffees.map((coffee) => ({
-      id: coffee.id,
-      name: coffee.name,
-      price: coffee.price,
-      pricePerTen : coffee.pricePerTen,
-      picture: coffee.picture,
-      discount: coffee.discount,
-      discountAmount: coffee.discountAmount,
-    })))
+  const token = req.headers.authorization?.replace("Bearer ", "")
+  if (!token) {
+    res.status(401).json({ error: 'Unauthorized' })
+    return
+  }
+  const verified = verifyJwt(token,secret)
+  if (typeof verified == "object" && verified !== null){
+    if (verified.role == "ADMIN"){
+      res.status(200).json(coffees.map((coffee) => ({
+        id: coffee.id,
+        name: coffee.name,
+        price: coffee.price,
+        pricePerTen : coffee.pricePerTen,
+        picture: coffee.picture,
+        discount: coffee.discount,
+        discountAmount: coffee.discountAmount,
+      })))
+    }
+  }else{
+    res.status(401).json([])
+  }
+
+  
 }

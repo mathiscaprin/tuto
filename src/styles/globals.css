@@ -226,14 +226,8 @@
     box-sizing: content-box;
 }
 
-.waiting{
-    height: 50px;
-    width: 50px;
-    margin: auto;
-}
-
 .rejectMessage{
-    font: var(--CPA-text-default);
+    font: var(--CPA-text-default-bold);
     color: var(--CPA-color-text-negative);
     text-align: center;
 }
