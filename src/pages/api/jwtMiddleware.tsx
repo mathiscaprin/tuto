@@ -11,7 +11,6 @@ export function jwtMiddleware(handler : (req : NextApiRequest, res : NextApiResp
 
     try {
       const decoded = jwt.verify(token, secret);
-      console.log("decoded : ",decoded)
     } catch (error) {
       return res.status(401).json([]);
     }

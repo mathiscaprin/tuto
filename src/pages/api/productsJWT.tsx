@@ -100,6 +100,8 @@ export const coffees : Product[] = [
 ]
 
 const handler = async (req : NextApiRequest,res : NextApiResponse) => {
+    //code
+    res.status(200).json(data)
   runMiddleware(req,res,cors)
   res.status(200).json(coffees.map((coffee) => ({
     id: coffee.id,
@@ -112,4 +114,4 @@ const handler = async (req : NextApiRequest,res : NextApiResponse) => {
   })))
 }
 
-export default jwtMiddleware (handler)
+export default jwtMiddleware(handler)
