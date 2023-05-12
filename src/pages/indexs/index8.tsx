@@ -5,7 +5,9 @@ import { api } from "../consts";
 
 const instance = Singleton.getInstance()
 
-async function productAPI(jwt: string){
+async function productAPI(jwt: string) : Promise<[Product[], string]>{
+  //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
   const res = await fetch(api, {
     method: 'GET',
     headers: {
@@ -14,11 +16,20 @@ async function productAPI(jwt: string){
     }
   })
   const coffees = await res.json()
-  return coffees
+  const status = `${res.status} : ${res.statusText}` 
+  return [coffees,status]
 }
 
-async function getProduct(id : number) : Promise<Product>{
-  const res = await fetch(api+ `/${id}`)
+async function getProduct(id : number, jwt:string) : Promise<Product>{
+  jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
+  const res = await fetch(api+ `/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwt}` // Add the JWT to the Authorization header
+    }
+  })
   const coffee = await res.json()
   return coffee
 }
@@ -113,8 +124,8 @@ export default function Version8() {
     discount : false,
     discountAmount : 1
 })
-
-    
+  const [jwt, setJwt] = useState("")
+  const [lastError, setLastError] = useState("")
 
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init({
@@ -123,13 +134,14 @@ export default function Version8() {
     }))
     
     if (!called){
+      setCalled(true)
       instance.getVariable().then((client : any)=>{
         client.getJWT().then(
-          (jwt : string)=>{
-            //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-            productAPI(jwt).then((res : any)=> {
-              setCoffees(res)
-              setCalled(true)
+          (newJwt : string)=>{
+            setJwt(newJwt)
+            productAPI(newJwt).then((res : [Product[],string])=> {
+              setCoffees(res[0])
+              setLastError(res[1])
             })
           }
         )
@@ -137,14 +149,12 @@ export default function Version8() {
     }
   })
 
-
   function launchProduct(id : number){
-    getProduct(id).then(
-      coffee=>{
-        setProfileCoffee(coffee)
-        setProfile(id)
-      }
-    )
+    //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+    getProduct(id, jwt).then( (res : any)=>{
+      setProfileCoffee(res)
+      setProfile(id)
+    })
   }
 
   function insertText(text : string){
@@ -154,7 +164,7 @@ export default function Version8() {
   }
 
   function insertCard(id : number){
-    getProduct(id).then((coffee)=>{
+    getProduct(id,jwt).then((coffee)=>{
       const card : Card = {
         title : coffee.name,
         text : coffee.description,
@@ -183,7 +193,7 @@ export default function Version8() {
       cards : []
     }
     const promises = productList.map((id)=>{
-      return(getProduct(id))
+      return(getProduct(id,jwt))
     })
 
     Promise.all(promises).then(coffees=>{coffees.forEach((coffee=>{
@@ -253,7 +263,7 @@ export default function Version8() {
                 <div>
                   <div className="list">
                     <div className="title">Products</div>
-                    {coffees.length == 0 && called ? <p className="rejectMessage">Erreur</p> : <></>}
+                    {coffees.length == 0 && called ? <p className="rejectMessage">Erreur {lastError}</p> : <></>}
                     {listCoffee}
                     <div className="sendBundle">
                       <button className="mainButton purpleButton" onClick={() => insertBundle(coffees.filter((coffee => usedWords.includes(coffee.name))).map(coffee=>coffee.id))}>Send suggestions</button>

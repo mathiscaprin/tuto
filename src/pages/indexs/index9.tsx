@@ -8,8 +8,14 @@ import { copyFile } from "fs";
 
 const instance = Singleton.getInstance()
 
-async function productAPI(){
-  const res = await fetch(api)
+async function productAPI(jwt: string){
+  const res = await fetch(api, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwt}` // Add the JWT to the Authorization header
+    }
+  })
   const coffees = await res.json()
   return coffees
 }
@@ -19,6 +25,7 @@ async function getProduct(id : number) : Promise<Product>{
   const coffee = await res.json()
   return coffee
 }
+
 
 type ApplePayPaymentRequestType = {
     requestIdentifier: UUID;
@@ -39,12 +46,12 @@ type ApplePayPaymentRequest = {
 type PaymentItem = {
   amount: string;
   label: string;
-  type: ApplePayLineItemType;
+  type: string;
 };
 
 enum ApplePayLineItemType {
-  final,
-  pending,
+  "final",
+  "pending",
 }
 
 type ShippingMethod = {
@@ -92,6 +99,9 @@ type ActionError = {
     details?: string[];
 }
 
+
+
+
 type Action = {
   type: "LINK";
   title: string;
@@ -138,7 +148,7 @@ function Price({coffee,perTen} : {coffee : PartialProduct, perTen : boolean}){
   )
 }
 
-function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetStateAction<number>>, insertText : (str : string)=>void, insertCard : (id : number)=>void, coffee : Product}){
+function Profile({back, insertText, insertCard, insertPay, coffee} : {back : Dispatch<SetStateAction<number>>, insertText : (str : string)=>void, insertCard : (id : number)=>void, insertPay : (id : number, qty : number)=>void, coffee : Product}){
 
   return(
   <div className="profile">
@@ -156,6 +166,7 @@ function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetSt
         <div className="sendBundle">
           <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
           <button className="mainButton" onClick={()=>insertCard(coffee.id)}>Send card</button>
+          <button className="mainButton" onClick={()=>insertPay(coffee.id,10)}>Send Pay</button>
         </div>
       </div>
     </div>
@@ -170,7 +181,7 @@ export default function Version8() {
   const [usedWords, setUsedWords] = useState<string[]>([])
   const [coffees, setCoffees] = useState<PartialProduct[]>([])
   const [profile, setProfile] = useState(-1)
-  const [role, setRole] = useState("undefined")
+  const [called, setCalled] = useState(false)
   const [profileCoffee, setProfileCoffee] = useState({
     id : -1,
     name : "",
@@ -183,41 +194,24 @@ export default function Version8() {
     discountAmount : 1
 })
 
-    
-
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init({
       onIntent : handleIntent,
       onTrigger : handleTrigger
     }))
-    if (role == "undefined"){
-        instance.getVariable().then(
-            (client : any)=>{
-                client.getJWT().then(
-                    (token : string)=>{
-                    try {
-                        const verifiedToken = jwt.verify(
-                            token,
-                            secret,
-                            { algorithms: ['HS256'] })
-                            console.log(verifiedToken)  
-                            if (typeof verifiedToken === 'object' && verifiedToken !== null) {                    
-                                setRole(verifiedToken.role)
-                            }
-                    }catch(err){
-                        setRole("rejected")
-                        console.log(err)
-                    }
-                    }
-                )
-            }
-        )
-    }
     
-    if (coffees.length == 0 && role == "ADMIN"){
-      productAPI().then((res : any)=> {
-        setCoffees(res)
-    })
+    if (!called){
+      instance.getVariable().then((client : any)=>{
+        client.getJWT().then(
+          (jwt : string)=>{
+            //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+            productAPI(jwt).then((res : any)=> {
+              setCoffees(res)
+              setCalled(true)
+            })
+          }
+        )
+      })
     }
   })
 
@@ -311,59 +305,54 @@ export default function Version8() {
     }
   }
 
-  function handleApplePay(coffees : Product[], quantity : number){
-    const allItems : PaymentItem[] = coffees.map(
+  function insertPay(id : number, quantity : number){
+    getProduct(id).then(
         coffee=>{
-            {
-                amount: quantity,
-                label: coffee.name
-                type :                     type : ApplePayLineItemType.final
-
-            }
-        }
-    )
-    
-    const applePayPaymentRequest: ApplePayPaymentRequestType = {
-        requestIdentifier: `${"3b2153a4"}-${"ef36"}-${"11ed"}-${"a05b"}-${"0242ac120003"}`, // UUID
-        payment: {
-            currencyCode: "USD",
-            lineItems: [
-                {
-                    amount: "45",
-                    label: "Earpods",
-                    type : ApplePayLineItemType.final
+            const applePayPaymentRequest: ApplePayPaymentRequestType = {
+                requestIdentifier: `${"3b2153a4"}-${"ef36"}-${"11ed"}-${"a05b"}-${"0242ac120003"}`, // UUID
+                payment: {
+                    currencyCode: "USD",
+                    lineItems: [
+                        {
+                            amount: quantity.toString(),
+                            label: coffee.name,
+                            type : "final"
+                        }
+                    ],
+                    requiredBillingContactFields: [ApplePayContactField.email],
+                    requiredShippingContactFields: [ApplePayContactField.email],
+                    shippingMethods: [
+                        {
+                            amount: quantity.toString(),
+                            detail: "Available within an hour",
+                            identifier: "in_store_pickup",
+                            label: "In-StorePickup"
+                        }
+                    ],
+                    total: {
+                        amount: quantity.toString(),
+                        label: "TOTAL",
+                        type: "final"
+                    }
+                },
+                receivedMessage: {
+                    type: "CARD",
+                    data: {
+                        title: "Please check this payment request",
+                        text: "Check this payment request and choose your shipping method",
+                        actions: [],
+                    }
                 }
-            ],
-            requiredBillingContactFields: [ApplePayContactField.email],
-            requiredShippingContactFields: [ApplePayContactField.email],
-            shippingMethods: [
-                {
-                    amount: quantity.toString(),
-                    detail: "Available within an hour",
-                    identifier: "in_store_pickup",
-                    label: "In-StorePickup"
+            }
+            console.log(applePayPaymentRequest)
+            instance.getVariable().then(
+                (client:any)=>{
+                    client.pushApplePayPaymentRequestInConversationThread(applePayPaymentRequest)
                 }
-            ],
-            total: {
-                amount: "1000",
-                label: "TOTAL",
-                type: "final"
-            }
-        },
-        receivedMessage: {
-            type: "CARD",
-            data: {
-                title: "Please check this payment request",
-                text: "Check this payment request and choose your shipping method",
-                actions: [],
-                style: "icon"
-            }
+            )
         }
-    }
-    
+      )
   }
-
-
 
   const listCoffee = coffees.map(coffee=>{
         return(
@@ -383,33 +372,22 @@ export default function Version8() {
       }
   )
 
-  function renderSwitch(role : string){
-    switch(role){
-      case "ADMIN":
-        return <>{listCoffee}
-          <div className="sendBundle">
-            <button className="mainButton purpleButton" onClick={() => insertBundle(coffees.filter((coffee => usedWords.includes(coffee.name))).map(coffee=>coffee.id))}>Send suggestions</button>
-            <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount).map(coffee=>coffee.id))}>Send discounted</button>
-          </div></>   
-       ;
-      case "undefined":
-        return <img className="waiting" src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif"/>;
-      case "rejected":
-        return <p className="rejectMessage">You do not have the permission to see the products</p>
-    }
-  }
-
   return (
     <div>
       {profile === -1 ? (
                 <div>
                   <div className="list">
                     <div className="title">Products</div>
-                    {renderSwitch(role)}
+                    {coffees.length == 0 && called ? <p className="rejectMessage">Erreur</p> : <></>}
+                    {listCoffee}
+                    <div className="sendBundle">
+                      <button className="mainButton purpleButton" onClick={() => insertBundle(coffees.filter((coffee => usedWords.includes(coffee.name))).map(coffee=>coffee.id))}>Send suggestions</button>
+                      <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount).map(coffee=>coffee.id))}>Send discounted</button>
+                    </div>                  
                   </div>
               </div>
       ):(
-        <Profile back={setProfile} insertText={insertText} coffee={profileCoffee} insertCard={insertCard}></Profile> 
+        <Profile back={setProfile} insertText={insertText} coffee={profileCoffee} insertCard={insertCard} insertPay={insertPay}></Profile> 
       )}
     </div>
   )
