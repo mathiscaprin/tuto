@@ -301,7 +301,7 @@ export default function Version8() {
   function handleTrigger(strings : string[]){
     const product = coffees.findLast((coffee)=>coffee.name == strings[0])
     if (typeof product != "undefined"){
-      setProfile(product.id)
+      launchProduct(product.id)
     }
   }
 
