@@ -1,27 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import Cors from 'cors'
 import { jwtMiddleware } from './jwtMiddleware'
-
-
-const cors = Cors({
-    methods: ['POST', 'GET', 'HEAD'],
-})
-
-function runMiddleware(
-    req: NextApiRequest,
-    res: NextApiResponse,
-    fn: Function
-  ) {
-    return new Promise((resolve, reject) => {
-      fn(req, res, (result: any) => {
-        if (result instanceof Error) {
-          return reject(result)
-        }
-        return resolve(result)
-      })
-    })
-  }
-
 
 export type Product = {
     id : number,
@@ -100,7 +78,6 @@ export const coffees : Product[] = [
 ]
 
 const handler = async (req : NextApiRequest,res : NextApiResponse) => {
-  runMiddleware(req,res,cors)
   res.status(200).json(coffees.map((coffee) => ({
     id: coffee.id,
     name: coffee.name,
