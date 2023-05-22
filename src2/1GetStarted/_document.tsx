@@ -5,6 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head/>
       <body>
+        {/*put the script here*/}
         <Main/>
         <NextScript/>
       </body>

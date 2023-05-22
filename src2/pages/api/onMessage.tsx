@@ -16,6 +16,7 @@ function runMiddleware(
         if (result instanceof Error) {
           return reject(result)
         }
+  
         return resolve(result)
       })
     })

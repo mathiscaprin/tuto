@@ -1,11 +1,13 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import Singleton from "../designpattern/singleton";
+import Singleton from "../designpattern/singleton"
 import { Product,PartialProduct } from "../api/products";
 import { api } from "../consts";
 
 const instance = Singleton.getInstance()
 
-async function productAPI(jwt: string){
+async function productAPI(jwt: string) : Promise<[PartialProduct[], number, string]>{
+  //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
   const res = await fetch(api, {
     method: 'GET',
     headers: {
@@ -14,90 +16,22 @@ async function productAPI(jwt: string){
     }
   })
   const coffees = await res.json()
-  return coffees
+  return [coffees,res.status,res.statusText]
 }
 
-async function getProduct(id : number) : Promise<Product>{
-  const res = await fetch(api+ `/${id}`)
+async function getProduct(id : number, jwt:string) : Promise<[Product, number, string]>{
+  //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
+  const res = await fetch(api+ `/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwt}` // Add the JWT to the Authorization header
+    }
+  })
   const coffee = await res.json()
-  return coffee
+  return [coffee, res.status, res.statusText]
 }
-
-
-type ApplePayPaymentRequestType = {
-    //requestIdentifier: UUID;
-    payment: ApplePayPaymentRequest;
-    receivedMessage: ApplePayReceivedMessage;
-}
-
-// Detail for payment field type
-type ApplePayPaymentRequest = {
-  currencyCode: string;
-  lineItems: PaymentItem[];
-  requiredBillingContactFields: ApplePayContactField[];
-  requiredShippingContactFields: ApplePayContactField[];
-  shippingMethods: ShippingMethod[];
-  total: PaymentItem;
-}
-
-type PaymentItem = {
-  amount: string;
-  label: string;
-  type: string;
-};
-
-enum ApplePayLineItemType {
-  "final",
-  "pending",
-}
-
-type ShippingMethod = {
-  amount: string;
-  detail: string;
-  identifier: string;
-  label: string;
-};
-
-enum ApplePayContactField {
-  email = 'email',
-  name = 'name',
-  phone = 'phone',
-  postalAddress = 'postalAddress',
-  phoneticName = 'phoneticName',
-}
-
-// type for receivedMessage field
-type ApplePayReceivedMessage = {
-  type: 'CARD';
-  data: CardType;
-}
-
-type CardType = {
-  title?: string;
-  text?: string;
-  image?: CardImage;
-  actions: LinkAction[];
-};
-
-type CardImage = {
-  url: string;
-  description: string;
-};
-
-type LinkAction = {
-  type: 'LINK';
-  title: string;
-  url: string;
-};
-
-// Error
-type ActionError = {
-    message: string;
-    details?: string[];
-}
-
-
-
 
 type Action = {
   type: "LINK";
@@ -145,7 +79,7 @@ function Price({coffee,perTen} : {coffee : PartialProduct, perTen : boolean}){
   )
 }
 
-function Profile({back, insertText, insertCard, insertPay, coffee} : {back : Dispatch<SetStateAction<number>>, insertText : (str : string)=>void, insertCard : (id : number)=>void, insertPay : (id : number, qty : number)=>void, coffee : Product}){
+function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetStateAction<number>>, insertText : (str : string)=>void, insertCard : (id : number)=>void, coffee : Product}){
 
   return(
   <div className="profile">
@@ -163,7 +97,6 @@ function Profile({back, insertText, insertCard, insertPay, coffee} : {back : Dis
         <div className="sendBundle">
           <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
           <button className="mainButton" onClick={()=>insertCard(coffee.id)}>Send card</button>
-          <button className="mainButton" onClick={()=>insertPay(coffee.id,10)}>Send Pay</button>
         </div>
       </div>
     </div>
@@ -190,7 +123,10 @@ export default function Version8() {
     discount : false,
     discountAmount : 1
 })
-
+  const [jwt, setJwt] = useState("")
+  const [getProductsError, setGetProductsError] = useState<[number,string]>([0,""])
+  const [getProductError, setGetProductError] = useState<[number, string]>([200,""])
+  const [showAlert, setShowAlert] = useState(false)
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init({
       onIntent : handleIntent,
@@ -198,13 +134,14 @@ export default function Version8() {
     }))
     
     if (!called){
+      setCalled(true)
       instance.getVariable().then((client : any)=>{
         client.getJWT().then(
-          (jwt : string)=>{
-            //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-            productAPI(jwt).then((res : any)=> {
-              setCoffees(res)
-              setCalled(true)
+          (newJwt : string)=>{
+            setJwt(newJwt)
+            productAPI(newJwt).then((res : [PartialProduct[],number,string])=> {
+              setCoffees(res[0])
+              setGetProductsError([res[1],res[2]])
             })
           }
         )
@@ -212,14 +149,20 @@ export default function Version8() {
     }
   })
 
-
   function launchProduct(id : number){
-    getProduct(id).then(
-      coffee=>{
-        setProfileCoffee(coffee)
+    //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+    getProduct(id,jwt).then((result  : [Product, number, string])=>{
+      setGetProductError([result[1],result[2]])
+      if (result[1] == 200){
+        setProfileCoffee(result[0])
         setProfile(id)
+      }else{
+          setShowAlert(true)
+          setTimeout(() => {
+             setShowAlert(false)
+          }, 2000)
       }
-    )
+    })
   }
 
   function insertText(text : string){
@@ -229,7 +172,8 @@ export default function Version8() {
   }
 
   function insertCard(id : number){
-    getProduct(id).then((coffee)=>{
+    getProduct(id,jwt).then((result  : [Product, number, string])=>{
+      const coffee = result[0]
       const card : Card = {
         title : coffee.name,
         text : coffee.description,
@@ -258,10 +202,11 @@ export default function Version8() {
       cards : []
     }
     const promises = productList.map((id)=>{
-      return(getProduct(id))
+      return(getProduct(id,jwt))
     })
 
-    Promise.all(promises).then(coffees=>{coffees.forEach((coffee=>{
+    Promise.all(promises).then(coffees=>{coffees.forEach(((result : [Product, number, string])=>{
+      const coffee = result[0]
       let card : Card = {
         title : coffee.name,
         text : coffee.description,
@@ -302,54 +247,7 @@ export default function Version8() {
     }
   }
 
-  function insertPay(id : number, quantity : number){
-    getProduct(id).then(
-        coffee=>{
-            const applePayPaymentRequest: ApplePayPaymentRequestType = {
-                //requestIdentifier: `${"3b2153a4"}-${"ef36"}-${"11ed"}-${"a05b"}-${"0242ac120003"}`, // UUID
-                payment: {
-                    currencyCode: "USD",
-                    lineItems: [
-                        {
-                            amount: quantity.toString(),
-                            label: coffee.name,
-                            type : "final"
-                        }
-                    ],
-                    requiredBillingContactFields: [ApplePayContactField.email],
-                    requiredShippingContactFields: [ApplePayContactField.email],
-                    shippingMethods: [
-                        {
-                            amount: quantity.toString(),
-                            detail: "Available within an hour",
-                            identifier: "in_store_pickup",
-                            label: "In-StorePickup"
-                        }
-                    ],
-                    total: {
-                        amount: quantity.toString(),
-                        label: "TOTAL",
-                        type: "final"
-                    }
-                },
-                receivedMessage: {
-                    type: "CARD",
-                    data: {
-                        title: "Please check this payment request",
-                        text: "Check this payment request and choose your shipping method",
-                        actions: [],
-                    }
-                }
-            }
-            console.log(applePayPaymentRequest)
-            instance.getVariable().then(
-                (client:any)=>{
-                    client.pushApplePayPaymentRequestInConversationThread(applePayPaymentRequest)
-                }
-            )
-        }
-      )
-  }
+
 
   const listCoffee = coffees.map(coffee=>{
         return(
@@ -375,16 +273,23 @@ export default function Version8() {
                 <div>
                   <div className="list">
                     <div className="title">Products</div>
-                    {coffees.length == 0 && called ? <p className="rejectMessage">Erreur</p> : <></>}
+                    {getProductsError[0] != 200 ? <p className="rejectMessage">Erreur {getProductsError[0] + " : " + getProductsError[1]}</p> : <></>}
                     {listCoffee}
                     <div className="sendBundle">
                       <button className="mainButton purpleButton" onClick={() => insertBundle(coffees.filter((coffee => usedWords.includes(coffee.name))).map(coffee=>coffee.id))}>Send suggestions</button>
                       <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount).map(coffee=>coffee.id))}>Send discounted</button>
                     </div>                  
                   </div>
+                  {showAlert ? 
+                    <div className="alert">
+                      <p>{getProductError[0] + " : " + getProductError[1]}</p>
+                    </div>  :
+                    <></>
+                }
+                  
               </div>
       ):(
-        <Profile back={setProfile} insertText={insertText} coffee={profileCoffee} insertCard={insertCard} insertPay={insertPay}></Profile> 
+        <Profile back={setProfile} insertText={insertText} coffee={profileCoffee} insertCard={insertCard}></Profile> 
       )}
     </div>
   )

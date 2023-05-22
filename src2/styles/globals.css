@@ -1,0 +1,246 @@
+@import 'https://static.iadvize.com/conversation-panel-app-lib/2.9.0/idzcpa.base.css';
+
+
+.card{
+    box-shadow: var(--CPA-shadow-small);
+    padding: var(--CPA-vertical-padding);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.card:hover{
+    box-shadow: var(--CPA-shadow-default);
+    transition: 50ms;
+    cursor : pointer;
+}
+
+.card p{
+    font : var(--CPA-text-default);
+    margin : 0;
+    color : var(--CPA-color-neutral-900)
+
+}
+
+.card button{
+    color: var(--CPA-color-text-main);
+    background-color: var(--CPA-color-neutral-200);
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.card .coffeePic{
+    max-width: 100px;
+    height: 60px;
+    margin-left: 10px;
+    background-color: var(--CPA-color-neutral-200);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.greaterThan{
+    height: 30px;
+    width: auto;
+}
+
+.card-right{
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    padding: 5px;
+    border-radius: 10px;
+    flex-grow: 2;
+    margin-left: 20px;
+}
+
+.sendBundle{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.profile{
+    display: flex;
+    flex-direction: column;
+    gap : 20px;
+    margin: 20px;
+    padding-bottom: 30px;
+}
+
+.profileHeader{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.profileHeader button{
+    grid-column: 1;
+    text-align: start;
+    text-align: start;
+    font: var(--CPA-text-default);
+    margin-left: 20px;
+    color: var(--CPA-color-text-action);
+    background-color: white;
+    border: none;
+    width: max-content;
+    height: max-content;
+
+}
+
+.profileHeader button:hover{
+    text-decoration: underline;
+    cursor : pointer
+}
+
+.profileHeader #coffeeName{
+    grid-column: 2;
+    text-align: center;
+    font: var(--CPA-text-large-bold)
+}
+
+.profileTop{
+    display: flex;
+    flex-direction: row;
+    text-align: start;
+    justify-content: space-around;
+    font : var(--CPA-text-default);
+}
+
+.profileTop img{
+    max-width: 100px;
+    height: 80px;
+    margin-top: 10px;
+    background-color: var(--CPA-color-neutral-200);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.top-right{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap:10px
+}
+
+.top-right p{
+    margin: 0;
+    color:var(--CPA-color-neutral-800)
+}
+
+.profileMiddle{
+    font : var(--CPA-text-default);
+    display: flex;
+    flex-direction: column;
+}
+
+.profileMiddle p{
+    margin: 0;
+}
+
+
+
+
+.mainButton{
+    width: fit-content;
+    background-color: var(--CPA-color-action);
+    border: 1px solid var(--CPA-color-neutral-200);
+    padding: 10px;
+    border-radius: 20px;
+    text-align: left;
+    color: white;
+    box-shadow: var(--CPA-shadow-small);
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.mainButton:hover{
+    box-shadow: var(--CPA-shadow-default);
+    color: var(--CPA-color-neutral-300);
+    cursor : pointer
+}
+
+.purpleButton{
+    background-color: #8260ff;
+}
+
+.title{
+    text-align: center;
+    margin-bottom: 20px;
+    font:var(--CPA-text-large-bold)
+}
+
+.list{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap : 10px;
+    margin-bottom: 30px;
+    padding: 30px;
+}
+
+.listUsed{
+    font: var(--CPA-text-default)
+}
+
+.price{
+    display: flex;
+    flex-direction: column;
+}
+
+.price p{
+    font: var(--CPA-text-small);
+    color : var(--CPA-color-text-positive)
+}
+
+.price span{
+    color : var(--CPA-color-neutral-600)
+
+}
+
+.previousPrice{
+    text-decoration: line-through;
+}
+
+.img-container{
+    position: relative;
+	display: inline-block;
+    margin-top: 10px;
+}
+
+.dot{
+    top : -4px;
+    right : -4px;
+    position: absolute;
+    width: 0.8rem;
+    height: 0.8rem;
+    background: #8260ff;
+    border: 1px solid white;
+    border-radius: 999px;
+    box-sizing: content-box;
+}
+
+.rejectMessage{
+    font: var(--CPA-text-default-bold);
+    color: var(--CPA-color-text-negative);
+    text-align: center;
+}
+
+.alert{
+    position:absolute;
+    top:50%;
+    left: 33%;
+    color: var(--CPA-color-neutral-000);
+    font: var(--CPA-text-default);
+    text-shadow: 0 0 1px black;;
+    background-color: var(--CPA-color-text-negative);
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 10px;
+}

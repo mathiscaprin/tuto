@@ -5,9 +5,15 @@ import { api } from "../consts";
 
 const instance = Singleton.getInstance()
 
+let resolveProducts;
+const productsPromise = new Promise<string>((resolve) => {
+  resolveProducts = resolve;
+})
+
+
 async function productAPI(jwt: string) : Promise<[PartialProduct[], number, string]>{
   //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-
+  console.log(jwt)
   const res = await fetch(api, {
     method: 'GET',
     headers: {
@@ -15,7 +21,10 @@ async function productAPI(jwt: string) : Promise<[PartialProduct[], number, stri
       'Authorization': `Bearer ${jwt}` // Add the JWT to the Authorization header
     }
   })
-  const coffees = await res.json()
+  let coffees : any[] = []
+  if (res.status == 200){
+     coffees = await res.json()
+  }
   return [coffees,res.status,res.statusText]
 }
 
@@ -127,6 +136,9 @@ export default function Version8() {
   const [getProductsError, setGetProductsError] = useState<[number,string]>([0,""])
   const [getProductError, setGetProductError] = useState<[number, string]>([200,""])
   const [showAlert, setShowAlert] = useState(false)
+  const [lastTriggerDatas, setLastTriggerDatas] = useState<string[]>([])
+  let triggerData : string[] = []
+
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init({
       onIntent : handleIntent,
@@ -140,8 +152,15 @@ export default function Version8() {
           (newJwt : string)=>{
             setJwt(newJwt)
             productAPI(newJwt).then((res : [PartialProduct[],number,string])=> {
-              setCoffees(res[0])
+              const tempCoffees = res[0]
+              setCoffees(tempCoffees)
               setGetProductsError([res[1],res[2]])
+              if (triggerData.length != 0){
+                const product = tempCoffees.findLast((coffee)=>coffee.name == triggerData[0])
+                if (typeof product != "undefined"){
+                  launchProduct(product.id,newJwt)
+                }
+              }
             })
           }
         )
@@ -149,9 +168,10 @@ export default function Version8() {
     }
   })
 
-  function launchProduct(id : number){
+  function launchProduct(id : number, newjwt = jwt){
     //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-    getProduct(id,jwt).then((result  : [Product, number, string])=>{
+    console.log(newjwt)
+    getProduct(id,newjwt).then((result  : [Product, number, string])=>{
       setGetProductError([result[1],result[2]])
       if (result[1] == 200){
         setProfileCoffee(result[0])
@@ -224,11 +244,10 @@ export default function Version8() {
       }
 
       carousel.cards.push(card)
-    }))
-    instance.getVariable().then((client : any)=>{
-      client.pushCardBundleInConversationThread(carousel)
-    })
-      
+      }))
+      instance.getVariable().then((client : any)=>{
+        client.pushCardBundleInConversationThread(carousel)
+      })
     })
   }
 
@@ -240,14 +259,16 @@ export default function Version8() {
     }))
   }
 
-  function handleTrigger(strings : string[]){
-    const product = coffees.findLast((coffee)=>coffee.name == strings[0])
-    if (typeof product != "undefined"){
-      launchProduct(product.id)
+  function handleTrigger(productNames : string[]){
+    if (coffees.length == 0){
+      triggerData = productNames
+    }else{
+      const product = coffees.findLast((coffee)=>coffee.name == productNames[0])
+      if (typeof product != "undefined"){
+        launchProduct(product.id)
+      }
     }
   }
-
-
 
   const listCoffee = coffees.map(coffee=>{
         return(

@@ -1,18 +1,11 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import Singleton from "../designpattern/singleton";
+import Singleton from "../designpattern/singleton"
 import { Product,PartialProduct } from "../api/products";
 import { api } from "../consts";
-
 const instance = Singleton.getInstance()
 
-async function productAPI(jwt: string){
-  const res = await fetch(api, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${jwt}` // Add the JWT to the Authorization header
-    }
-  })
+async function productAPI(){
+  const res = await fetch(api)
   const coffees = await res.json()
   return coffees
 }
@@ -22,82 +15,6 @@ async function getProduct(id : number) : Promise<Product>{
   const coffee = await res.json()
   return coffee
 }
-
-
-type ApplePayPaymentRequestType = {
-    //requestIdentifier: UUID;
-    payment: ApplePayPaymentRequest;
-    receivedMessage: ApplePayReceivedMessage;
-}
-
-// Detail for payment field type
-type ApplePayPaymentRequest = {
-  currencyCode: string;
-  lineItems: PaymentItem[];
-  requiredBillingContactFields: ApplePayContactField[];
-  requiredShippingContactFields: ApplePayContactField[];
-  shippingMethods: ShippingMethod[];
-  total: PaymentItem;
-}
-
-type PaymentItem = {
-  amount: string;
-  label: string;
-  type: string;
-};
-
-enum ApplePayLineItemType {
-  "final",
-  "pending",
-}
-
-type ShippingMethod = {
-  amount: string;
-  detail: string;
-  identifier: string;
-  label: string;
-};
-
-enum ApplePayContactField {
-  email = 'email',
-  name = 'name',
-  phone = 'phone',
-  postalAddress = 'postalAddress',
-  phoneticName = 'phoneticName',
-}
-
-// type for receivedMessage field
-type ApplePayReceivedMessage = {
-  type: 'CARD';
-  data: CardType;
-}
-
-type CardType = {
-  title?: string;
-  text?: string;
-  image?: CardImage;
-  actions: LinkAction[];
-};
-
-type CardImage = {
-  url: string;
-  description: string;
-};
-
-type LinkAction = {
-  type: 'LINK';
-  title: string;
-  url: string;
-};
-
-// Error
-type ActionError = {
-    message: string;
-    details?: string[];
-}
-
-
-
 
 type Action = {
   type: "LINK";
@@ -145,7 +62,7 @@ function Price({coffee,perTen} : {coffee : PartialProduct, perTen : boolean}){
   )
 }
 
-function Profile({back, insertText, insertCard, insertPay, coffee} : {back : Dispatch<SetStateAction<number>>, insertText : (str : string)=>void, insertCard : (id : number)=>void, insertPay : (id : number, qty : number)=>void, coffee : Product}){
+function Profile({back, insertText, insertCard, coffee} : {back : Dispatch<SetStateAction<number>>, insertText : (str : string)=>void, insertCard : (id : number)=>void, coffee : Product}){
 
   return(
   <div className="profile">
@@ -163,7 +80,6 @@ function Profile({back, insertText, insertCard, insertPay, coffee} : {back : Dis
         <div className="sendBundle">
           <button className="mainButton" onClick={()=>insertText(coffee.link)}>Send link</button>
           <button className="mainButton" onClick={()=>insertCard(coffee.id)}>Send card</button>
-          <button className="mainButton" onClick={()=>insertPay(coffee.id,10)}>Send Pay</button>
         </div>
       </div>
     </div>
@@ -173,12 +89,10 @@ function Profile({back, insertText, insertCard, insertPay, coffee} : {back : Dis
   
 }
 
-export default function Version8() {
-
+export default function Version7() {
   const [usedWords, setUsedWords] = useState<string[]>([])
   const [coffees, setCoffees] = useState<PartialProduct[]>([])
   const [profile, setProfile] = useState(-1)
-  const [called, setCalled] = useState(false)
   const [profileCoffee, setProfileCoffee] = useState({
     id : -1,
     name : "",
@@ -196,22 +110,12 @@ export default function Version8() {
       onIntent : handleIntent,
       onTrigger : handleTrigger
     }))
-    
-    if (!called){
-      instance.getVariable().then((client : any)=>{
-        client.getJWT().then(
-          (jwt : string)=>{
-            //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-            productAPI(jwt).then((res : any)=> {
-              setCoffees(res)
-              setCalled(true)
-            })
-          }
-        )
-      })
+    if (coffees.length == 0){
+      productAPI().then((res : any)=> {
+        setCoffees(res)
+    })
     }
   })
-
 
   function launchProduct(id : number){
     getProduct(id).then(
@@ -302,54 +206,7 @@ export default function Version8() {
     }
   }
 
-  function insertPay(id : number, quantity : number){
-    getProduct(id).then(
-        coffee=>{
-            const applePayPaymentRequest: ApplePayPaymentRequestType = {
-                //requestIdentifier: `${"3b2153a4"}-${"ef36"}-${"11ed"}-${"a05b"}-${"0242ac120003"}`, // UUID
-                payment: {
-                    currencyCode: "USD",
-                    lineItems: [
-                        {
-                            amount: quantity.toString(),
-                            label: coffee.name,
-                            type : "final"
-                        }
-                    ],
-                    requiredBillingContactFields: [ApplePayContactField.email],
-                    requiredShippingContactFields: [ApplePayContactField.email],
-                    shippingMethods: [
-                        {
-                            amount: quantity.toString(),
-                            detail: "Available within an hour",
-                            identifier: "in_store_pickup",
-                            label: "In-StorePickup"
-                        }
-                    ],
-                    total: {
-                        amount: quantity.toString(),
-                        label: "TOTAL",
-                        type: "final"
-                    }
-                },
-                receivedMessage: {
-                    type: "CARD",
-                    data: {
-                        title: "Please check this payment request",
-                        text: "Check this payment request and choose your shipping method",
-                        actions: [],
-                    }
-                }
-            }
-            console.log(applePayPaymentRequest)
-            instance.getVariable().then(
-                (client:any)=>{
-                    client.pushApplePayPaymentRequestInConversationThread(applePayPaymentRequest)
-                }
-            )
-        }
-      )
-  }
+
 
   const listCoffee = coffees.map(coffee=>{
         return(
@@ -375,18 +232,16 @@ export default function Version8() {
                 <div>
                   <div className="list">
                     <div className="title">Products</div>
-                    {coffees.length == 0 && called ? <p className="rejectMessage">Erreur</p> : <></>}
                     {listCoffee}
                     <div className="sendBundle">
-                      <button className="mainButton purpleButton" onClick={() => insertBundle(coffees.filter((coffee => usedWords.includes(coffee.name))).map(coffee=>coffee.id))}>Send suggestions</button>
-                      <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount).map(coffee=>coffee.id))}>Send discounted</button>
-                    </div>                  
+                        <button className="mainButton purpleButton" onClick={() => insertBundle(coffees.filter((coffee => usedWords.includes(coffee.name))).map(coffee=>coffee.id))}>Send suggestions</button>
+                        <button className="mainButton" onClick={()=> insertBundle(coffees.filter((coffee) => coffee.discount).map(coffee=>coffee.id))}>Send discounted</button>
+                    </div>
                   </div>
               </div>
       ):(
-        <Profile back={setProfile} insertText={insertText} coffee={profileCoffee} insertCard={insertCard} insertPay={insertPay}></Profile> 
+        <Profile back={setProfile} insertText={insertText} coffee={profileCoffee} insertCard={insertCard}></Profile> 
       )}
     </div>
   )
 }
-

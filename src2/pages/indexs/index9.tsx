@@ -1,12 +1,14 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import Singleton from "../designpattern/singleton";
+import Singleton from "../designpattern/singleton"
 import { Product,PartialProduct } from "../api/products";
-import { api } from "../consts";
+import { apiJWT } from "../consts";
+import jwt from 'jsonwebtoken';
+import { copyFile } from "fs";
 
 const instance = Singleton.getInstance()
 
 async function productAPI(jwt: string){
-  const res = await fetch(api, {
+  const res = await fetch(apiJWT, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -18,7 +20,7 @@ async function productAPI(jwt: string){
 }
 
 async function getProduct(id : number) : Promise<Product>{
-  const res = await fetch(api+ `/${id}`)
+  const res = await fetch(apiJWT+ `/${id}`)
   const coffee = await res.json()
   return coffee
 }
