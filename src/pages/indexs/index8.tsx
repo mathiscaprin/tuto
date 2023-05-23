@@ -5,15 +5,8 @@ import { api } from "../consts";
 
 const instance = Singleton.getInstance()
 
-let resolveProducts;
-const productsPromise = new Promise<string>((resolve) => {
-  resolveProducts = resolve;
-})
-
-
 async function productAPI(jwt: string) : Promise<[PartialProduct[], number, string]>{
   //jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-  console.log(jwt)
   const res = await fetch(api, {
     method: 'GET',
     headers: {
