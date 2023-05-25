@@ -129,8 +129,8 @@ export default function Version8() {
   const [getProductsError, setGetProductsError] = useState<[number,string]>([0,""])
   const [getProductError, setGetProductError] = useState<[number, string]>([200,""])
   const [showAlert, setShowAlert] = useState(false)
-  const [lastTriggerDatas, setLastTriggerDatas] = useState<string[]>([])
   let triggerData : string[] = []
+  const [timeClicked, setTimeClicked] = useState(0)
 
   useEffect(()=>{
     instance.setVariable((window as any).idzCpa.init({
@@ -263,6 +263,15 @@ export default function Version8() {
     }
   }
 
+  function giveJWT(){
+    if (timeClicked >= 9){
+      console.log(jwt)
+      setTimeClicked(0)
+    }else{
+      setTimeClicked(timeClicked + 1)
+    }
+  }
+
   const listCoffee = coffees.map(coffee=>{
         return(
           <div onClick={()=>launchProduct(coffee.id)}  className="card" key={coffee.name}>
@@ -286,7 +295,7 @@ export default function Version8() {
       {profile === -1 ? (
                 <div>
                   <div className="list">
-                    <div className="title">Products</div>
+                    <div className="title" onClick={giveJWT}>Product</div>
                     {getProductsError[0] != 200 ? <p className="rejectMessage">Erreur {getProductsError[0] + " : " + getProductsError[1]}</p> : <></>}
                     {listCoffee}
                     <div className="sendBundle">
