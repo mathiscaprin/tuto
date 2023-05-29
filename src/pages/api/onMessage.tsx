@@ -51,13 +51,15 @@ export default async function handler(req : NextApiRequest,res : NextApiResponse
     messages.forEach((message : Message) => {
         coffees.forEach(coffee =>{
           if (message.text.toLowerCase().includes(coffee.name.toLowerCase())){
+              const matchIndex = message.text.toLowerCase().indexOf(coffee.name.toLowerCase());
+              const exact = message.text.substring(matchIndex, matchIndex + coffee.name.length);
               commandes.push(
                   {
                     "type": "addMessageActions",
                     "messageId": message.id,
                     "actions": [
                       {
-                        "highlight": coffee.name,
+                        "highlight": exact,
                         "intent": {
                           "key": coffee.name,
                           "payload": {
