@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { gitbook } from '../../consts'
+import {rick as gitbook} from '../consts'
 const forte = "https://i.ibb.co/8gnmktW/forte.jpg"
 const mint = "https://i.ibb.co/MDLN5FG/mint.jpg"
 const watermelon = "https://i.ibb.co/hg6dDMt/watermelon.jpg"
