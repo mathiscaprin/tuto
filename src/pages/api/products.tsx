@@ -1,4 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { gitbook } from '../../consts'
+const forte = "https://i.ibb.co/8gnmktW/forte.jpg"
+const mint = "https://i.ibb.co/MDLN5FG/mint.jpg"
+const watermelon = "https://i.ibb.co/hg6dDMt/watermelon.jpg"
+const pistachio = "https://i.ibb.co/88h57zj/pistachio.jpg"
+const gold = "https://i.ibb.co/6ZP3BPt/gold-exeprience.jpg"
+
+/*https://ibb.co/PGsrk07
+https://ibb.co/BVRsK0r
+https://ibb.co/0n79hXd
+https://ibb.co/NY4jy1L
+https://ibb.co/g7T5VTW
+*/
 
 export type Product = {
     id : number,
@@ -22,7 +35,7 @@ export type PartialProduct = {
   discountAmount : number,
 }
 
-export const coffees : Product[] = [
+/*export const coffees : Product[] = [
     {
         id : 1,
         name : "Vaniglia",
@@ -71,6 +84,60 @@ export const coffees : Product[] = [
         pricePerTen : 4.90,
         picture : "https://www.nespresso.com/ecom/medias/sys_master/public/26728687829022/OL-Caramello.png?impolicy=product&imwidth=90",
         link : "https://www.nespresso.com/fr/en/order/capsules/original/barista-caramello-caspule-cafe",
+        discount : true,
+        discountAmount : 0.8
+    }
+]*/
+
+export const coffees : Product[] = [
+    {
+        id : 1,
+        name : "Homemade",
+        description : "A coffee from the machine, we put it into a capsule. Hopefully it's still good",
+        price : 0.49,
+        pricePerTen : 4.90,
+        picture : forte,
+        link : gitbook,
+        discount : false,
+        discountAmount : 1
+    },{
+        id : 2,
+        name : "Watermelon",
+        description : "A refreshing coffee to brighten your afternon",
+        price : 0.43,
+        pricePerTen : 4.30,
+        picture : watermelon,
+        link : gitbook,
+        discount : false,
+        discountAmount : 1
+    },{
+        id : 3,
+        name : "mint",
+        description : "A nice coffee for every mint enjoyer to wake you up and improve your breath",
+        price : 0.46,
+        pricePerTen : 4.60,
+        picture : mint,
+        link : gitbook,
+        discount : true, 
+        discountAmount : 0.7
+    },{
+        id : 4,
+        name : "Pistachio",
+        description : "Pistachios are cool.",
+        price : 1.50,
+        pricePerTen : 15,
+        picture : pistachio,
+        link : gitbook,
+        discount : false,
+        discountAmount : 1
+    },{
+        id : 5, 
+        name : "Gold Experience",
+        description : "Fresh as a golden wind, a divine requiem",
+        price : 0.49,
+        pricePerTen : 4.90,
+        picture : gold,
+        link : gitbook,
         discount : true,
         discountAmount : 0.8
     }
