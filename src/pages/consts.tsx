@@ -1,3 +1,8 @@
 export const api = "http://localhost:3000/api/products"
 export const rick = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 export const secret = "31387579c19deaf21d112a8fd2f050ef"
+export const homemade = "https://raw.githubusercontent.com/mathiscaprin/tuto/main/src/assets/forte.jpg"
+export const watermelon = "https://raw.githubusercontent.com/mathiscaprin/tuto/main/src/assets/watermelon.jpg"
+export const pistachio = "https://raw.githubusercontent.com/mathiscaprin/tuto/main/src/assets/pistachio.jpg"
+export const gold = "https://raw.githubusercontent.com/mathiscaprin/tuto/main/src/assets/gold%20exeprience.jpg"
+export const mint = "https://raw.githubusercontent.com/mathiscaprin/tuto/main/src/assets/mint.jpg"

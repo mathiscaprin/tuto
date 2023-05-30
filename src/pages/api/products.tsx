@@ -1,11 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {rick as gitbook} from '../consts'
-const forte = "https://i.ibb.co/8gnmktW/forte.jpg"
-const mint = "https://i.ibb.co/MDLN5FG/mint.jpg"
-const watermelon = "https://i.ibb.co/hg6dDMt/watermelon.jpg"
-const pistachio = "https://i.ibb.co/88h57zj/pistachio.jpg"
-const gold = "https://i.ibb.co/6ZP3BPt/gold-exeprience.jpg"
-
+import {rick as gitbook, homemade, pistachio, watermelon, mint, gold} from '../consts'
 /*https://ibb.co/PGsrk07
 https://ibb.co/BVRsK0r
 https://ibb.co/0n79hXd
@@ -96,7 +90,7 @@ export const coffees : Product[] = [
         description : "A coffee from the machine, we put it into a capsule. Hopefully it's still good",
         price : 0.49,
         pricePerTen : 4.90,
-        picture : forte,
+        picture : homemade,
         link : gitbook,
         discount : false,
         discountAmount : 1
