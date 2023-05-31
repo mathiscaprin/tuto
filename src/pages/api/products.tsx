@@ -106,7 +106,7 @@ export const coffees : Product[] = [
         discountAmount : 1
     },{
         id : 3,
-        name : "mint",
+        name : "Mint",
         description : "A nice coffee for every mint enjoyer to wake you up and improve your breath",
         price : 0.46,
         pricePerTen : 4.60,
